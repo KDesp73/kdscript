@@ -23,7 +23,7 @@ def main():
         print("USAGE: python3 src/main.py <file>")
         exit(1)
 
-    if args.filename.split('.')[1] != "kd":
+    if args.filename.rsplit('.', 1)[1] != "kd":
         print("ERROR: invalid file extension. Use '*.kd'")
 
     Program(State(args.filename, 0))
