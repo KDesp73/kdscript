@@ -1,0 +1,19 @@
+number = 39
+guess = 0
+tries = 0
+
+while guess != number {
+    echo "Guess: "
+    guess = val(input())
+    if guess < number {
+        echo "Your guess is less than the number\n"
+    } 
+
+    if guess > number {
+        echo "Your guess is greater than the number\n"
+    }
+
+    tries = tries + 1
+}
+
+echo "You found the number in ", tries, " tries!\n"
