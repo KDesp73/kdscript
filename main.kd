@@ -1,18 +1,4 @@
-
-func main {
-    echo "Hello World\n"
-
-    a = 5 +2 - 1
-
-    echo a
-    echo "\n"
-    if a > 5 {
-        echo "True\n"
-    } else {
-        echo "False\n"
-    }
-}
-
+# Method to print a star pyramid of user defined height
 func printPyramid {
     echo "Enter height: "
     height = val(input())
