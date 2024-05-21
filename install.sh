@@ -11,7 +11,6 @@ if [ "$1" == "clean" ]; then
     rm *.spec
 
     echo "[INFO] Application uninstalled successfully"
-    exit 0
 fi
 
 if [ -f "./dist/main" ]; then

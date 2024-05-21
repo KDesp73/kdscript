@@ -14,11 +14,6 @@ kdscript [filename].kd
 
 A tiny interpreter for an imaginary scripting language
 
-.SH COMMANDS
-
-action {backup,restore}
-filename
-
 .SH OPTIONS
 
 -h, --help                show help message
