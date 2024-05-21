@@ -2,15 +2,28 @@
 
 exe="kdscript"
 
-
-if [ "$1" == "clean" ]; then
+uninstall (){
     sudo rm /usr/bin/$exe
     sudo rm /usr/share/man/man8/$exe.8.gz
-    rm -r build
-    rm -r dist
-    rm *.spec
 
     echo "[INFO] Application uninstalled successfully"
+}
+
+clean (){
+    rm -r build
+    rm -r dist
+
+    echo "[INFO] Cleaned project"
+}
+
+if [ "$1" == "clean" ]; then
+    clean
+    exit 0
+fi
+
+if [ "$1" == "remove" ]; then
+    uninstall
+    exit 0
 fi
 
 if [ -f "./dist/main" ]; then
