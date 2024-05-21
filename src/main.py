@@ -7,4 +7,9 @@ if __name__ == "__main__":
         print("USAGE: python3 src/main.py <file>")
         exit(1)
 
-    Program(State(sys.argv[1], 0))
+    path = sys.argv[1]
+
+    if path.split('.')[1] != "kd":
+        print("ERROR: invalid file extension. Use '*.kd'")
+
+    Program(State(path, 0))
