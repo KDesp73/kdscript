@@ -1,0 +1,30 @@
+.\" Manpage for kdscript.
+.\" Contact despoinidisk@gmail.com to correct errors or typos.
+.TH man 8 "22 May 2024" "0.0.1" "kdscript man page"
+
+.SH NAME
+
+kdscript \- A simple interpreter
+
+.SH SYNOPSIS
+
+kdscript [filename].kd 
+
+.SH DESCRIPTION
+
+A tiny interpreter for an imaginary scripting language
+
+.SH COMMANDS
+
+action {backup,restore}
+filename
+
+.SH OPTIONS
+
+-h, --help                show help message
+
+-v, --version             print executable version
+
+.SH AUTHOR
+
+KDesp73 (https://github.com/KDesp73)

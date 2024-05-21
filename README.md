@@ -1,5 +1,12 @@
 # kd interpreter
 
+## Install
+
+```sh
+./install.sh
+```
+
+
 ## Usage
 
 1. Write your script
