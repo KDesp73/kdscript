@@ -13,7 +13,7 @@
 2. Run with: 
 
 ```sh
-python3 src/main.py filename.kd
+kdscript filename.kd
 ```
 
 ## Example Script
