@@ -14,7 +14,8 @@ func main {
 }
 
 func printPyramid {
-    height = 5
+    echo "Enter height: "
+    height = val(input())
     i = 1
     while i <= height {
         spaces = height - i
