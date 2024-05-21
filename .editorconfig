@@ -1,0 +1,26 @@
+# EditorConfig helps developers define and maintain consistent coding styles.
+# For more information about the format and options, please see:
+# http://editorconfig.org
+
+# Top-most EditorConfig file
+root = true
+
+# Unix-style newlines with a newline ending every file
+[*]
+end_of_line = lf
+insert_final_newline = true
+
+# Set indent style to spaces
+[*.py]
+indent_style = space
+indent_size = 4
+
+# Tab indentation (no spaces)
+[*.js]
+indent_style = space
+
+# Matches the exact files either at the root of the project or in any directory
+[{*,.*}]
+indent_style = space
+indent_size = 4
+
