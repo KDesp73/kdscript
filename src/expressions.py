@@ -4,7 +4,7 @@ from statements import Statement
 from utils import *
 from errors import Error, RuntimeError
 
-def BooleanFactor(state: State, active):
+def BooleanFactor(state: State, active: list):
     inv = parser.take_next(state, '!')
     e = Expression(state, active)
     b = int(e[1])
@@ -25,17 +25,17 @@ def BooleanFactor(state: State, active):
 
     return active[0] and (b != inv)	
 
-def BooleanTerm(state: State, active):
+def BooleanTerm(state: State, active: list):
     b = BooleanFactor(state, active)
     while parser.take_next(state, '&'): b = b & BooleanFactor(state, active)
     return b
 
-def BooleanExpression(state: State, active):
+def BooleanExpression(state: State, active: list):
     b = BooleanTerm(state, active)
     while parser.take_next(state, '|'): b = b | BooleanTerm(state, active)
     return b
 
-def MathFactor(state, active):
+def MathFactor(state, active: list):
     m = 0
     if parser.take_next(state, '('):
         m = MathExpression(state, active)
@@ -53,7 +53,7 @@ def MathFactor(state, active):
     
     return m
 
-def MathTerm(state: State, active):
+def MathTerm(state: State, active: list):
     m = MathFactor(state, active)
     while is_mul_op(parser.next(state)):
         c = parser.take(state)
@@ -67,7 +67,7 @@ def MathTerm(state: State, active):
 
     return m
 
-def MathExpression(state: State, active):
+def MathExpression(state: State, active: list):
     c = parser.next(state)
     if is_add_op(c):
         c = parser.take(state)
@@ -80,7 +80,7 @@ def MathExpression(state: State, active):
         else: m = m - m2
     return m
 
-def String(state: State, active):
+def String(state: State, active: list):
     s = ""
     if parser.take_next(state, '\"'):	
         while not parser.take_string(state, "\""):
@@ -104,12 +104,12 @@ def String(state: State, active):
             Error(state, "not a string").throw()
     return s
 
-def StringExpression(state: State, active):
+def StringExpression(state: State, active: list):
     s = String(state, active)
     while parser.take_next(state, '+'): s += String(state, active)
     return s
 
-def Expression(state: State, active):
+def Expression(state: State, active: list):
     copypc = state.position
     id = parser.take_next_alnum(state)
     state.position = copypc
@@ -118,7 +118,7 @@ def Expression(state: State, active):
         return ('s', StringExpression(state, active))
     else: return ('i', MathExpression(state, active))
 
-def Block(state: State, active):
+def Block(state: State, active: list):
     if parser.take_next(state, '{'):
         while not parser.take_next(state, '}'):
             Block(state, active)

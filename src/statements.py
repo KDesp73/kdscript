@@ -1,7 +1,7 @@
 import parser
 from actions import *
 
-def Statement(state: State, active):
+def Statement(state: State, active: list):
     if parser.take_string(state, "echo"): do_echo(state, active)
     elif parser.take_string(state, "if"): do_if_else(state, active)
     elif parser.take_string(state, "while"): do_while(state, active)
