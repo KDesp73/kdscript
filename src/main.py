@@ -1,4 +1,4 @@
-import sys
+from logger import ERRO
 from state import State
 from expressions import Program
 import argparse
@@ -20,7 +20,8 @@ def main():
     args = args_parser.parse_args()
 
     if args.filename.rsplit('.', 1)[1] != "kd":
-        print("ERROR: invalid file extension. Use '*.kd'")
+        ERRO("Invalid file extension", "Use '*.kd'")
+        exit(1)
 
     Program(State(args.filename, 0))
 

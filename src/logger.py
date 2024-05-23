@@ -1,5 +1,5 @@
 
-def log(status, msg):
+def LOG(status, msg, hint = ""):
     """
     Log a message prefixed by a status tag
 
@@ -11,10 +11,14 @@ def log(status, msg):
         the print contents
     """
 
-    print(f"[{status}] {msg}")
+    print(f"[{status}] {msg}.", end="")
+    if hint != "":
+        print(f" Hint: {hint}")
+    else:
+        print("")
 
 
-def info(msg):
+def INFO(msg):
     """
     Log a message prefixed by the INFO status tag
 
@@ -24,10 +28,10 @@ def info(msg):
         the print contents
     """
 
-    log("INFO", msg)
+    LOG("INFO", msg)
 
 
-def warn(msg):
+def WARN(msg, hint = ""):
     """
     Log a message prefixed by the WARN status tag
 
@@ -37,10 +41,10 @@ def warn(msg):
         the print contents
     """
 
-    log("WARN", msg)
+    LOG("WARN", msg, hint)
 
 
-def erro(msg):
+def ERRO(msg, hint = ""):
     """
     Log a message prefixed by the ERRO status tag
 
@@ -50,10 +54,10 @@ def erro(msg):
         the print contents
     """
 
-    log("ERRO", msg)
+    LOG("ERRO", msg, hint)
 
 
-def succ(msg):
+def SUCC(msg):
     """
     Log a message prefixed by the SUCC status tag
 
@@ -63,10 +67,10 @@ def succ(msg):
         the print contents
     """
 
-    log("SUCC", msg)
+    LOG("SUCC", msg)
 
 
-def fail(msg):
+def FAIL(msg, hint = ""):
     """
     Log a message prefixed by the FAIL status tag
 
@@ -76,10 +80,10 @@ def fail(msg):
         the print contents
     """
 
-    log("FAIL", msg)
+    LOG("FAIL", msg, hint)
 
 
-def debu(msg):
+def DEBU(msg):
     """
     Log a message prefixed by the DEBU status tag
 
@@ -89,4 +93,4 @@ def debu(msg):
         the print contents
     """
 
-    log("DEBU", msg)
+    LOG("DEBU", msg)
