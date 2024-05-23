@@ -2,7 +2,7 @@ import parser
 from state import State
 from statements import Statement
 from utils import *
-from errors import Error
+from errors import Error, RuntimeError
 
 def BooleanFactor(state: State, active):
     inv = parser.take_next(state, '!')
@@ -58,8 +58,12 @@ def MathTerm(state: State, active):
     while is_mul_op(parser.next(state)):
         c = parser.take(state)
         m2 = MathFactor(state, active)
-        if c == '*': m = m * m2
-        else: m = m / m2
+        if c == '*': 
+            m = m * m2
+        else: 
+            if m2 == 0:
+                RuntimeError(state, "Division by zero").throw()
+            m = m / m2
 
     return m
 
