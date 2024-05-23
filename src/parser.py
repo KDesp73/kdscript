@@ -1,3 +1,4 @@
+from logger import INFO
 from utils import *
 from state import State
 
@@ -60,7 +61,7 @@ def take_next_alnum(state: State):
 
     alnum = ""
     if is_alpha(next(state)):
-        while is_alnum(inspect(state)): alnum += take(state)
-
+        while is_alnum(inspect(state)) or inspect(state) == '.': alnum += take(state)
+        
     return alnum
 

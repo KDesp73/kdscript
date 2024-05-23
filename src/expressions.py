@@ -3,6 +3,7 @@ from state import State
 from statements import Statement
 from utils import *
 from errors import Error, RuntimeError
+import re
 
 def BooleanFactor(state: State, active: list):
     inv = parser.take_next(state, '!')
@@ -37,14 +38,30 @@ def BooleanExpression(state: State, active: list):
 
 def MathFactor(state, active: list):
     m = 0
+    m_dec = 0
+    is_dec = False
     if parser.take_next(state, '('):
         m = MathExpression(state, active)
         if not parser.take_next(state, ')'): Error(state, "missing ')'").throw()
     elif is_digit(parser.next(state)):
-        while is_digit(parser.inspect(state)): m = 10 * m + ord(parser.take(state)) - ord('0') 
+        while is_digit(parser.inspect(state)) or parser.inspect(state) == '.': 
+            c = parser.take(state)
+            
+            if c == '.': 
+                is_dec = True
+                continue
+            if not is_dec:
+                m = 10 * m + ord(c) - ord('0') 
+            else:
+                m_dec = 10 * m_dec + ord(c) - ord('0') 
+        if is_dec:
+            m = m + ( m_dec/(len(str(m_dec)*10)) )
     elif parser.take_string(state, "val("):
         s = String(state, active)
-        if active[0] and s.isdigit(): m = int(s)
+        if active[0]:
+            if s.isdigit(): m = int(s)
+            elif re.match("^[0-9]*\.[0-9]*$", s) != None : 
+                m = float(s)
         if not parser.take_next(state, ')'): Error(state, "missing ')'").throw()
     else: 
         id = parser.take_next_alnum(state)
