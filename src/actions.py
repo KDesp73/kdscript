@@ -29,7 +29,8 @@ def do_call(state: State, active):
         Error(state, "unknown funcroutine").throw()
     ret = state.position
     state.position = state.variable[id][1]
-    Block(state, active)
+    if active[0]:
+        Block(state, active)
     state.position = ret
 
 def do_if_else(state: State, active):

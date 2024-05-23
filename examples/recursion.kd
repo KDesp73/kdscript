@@ -1,0 +1,11 @@
+a = 0
+
+func recursion {
+    echo a, "\n"
+    a = a + 1
+    if a <= 5 {
+        call recursion
+    }
+}
+
+call recursion
