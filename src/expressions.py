@@ -37,19 +37,27 @@ def BooleanExpression(state: State, active: list):
 
 def MathFactor(state, active: list):
     m = 0
-    if parser.take_next(state, '('):
+    if parser.take_next(state, '('): # complex expression
         m = MathExpression(state, active)
         if not parser.take_next(state, ')'): Error(state, "missing ')'").throw()
-    elif is_digit(parser.next(state)):
-        while is_digit(parser.inspect(state)): m = 10 * m + ord(parser.take(state)) - ord('0') 
-    elif parser.take_string(state, "val("):
+    elif is_digit(parser.next(state)): # number
+        while is_digit(parser.inspect(state)): 
+            m = 10 * m + ord(parser.take(state)) - ord('0') 
+    elif parser.take_string(state, "val("): # string to num
         s = String(state, active)
-        if active[0] and s.isdigit(): m = int(s)
-        if not parser.take_next(state, ')'): Error(state, "missing ')'").throw()
-    else: 
+        if active[0]:
+            if s.isdigit(): 
+                m = int(s)
+            else:
+                RuntimeError(state, "input not a number").throw()
+        if not parser.take_next(state, ')'): 
+            Error(state, "missing ')'").throw()
+    else: # Variables
         id = parser.take_next_alnum(state)
-        if id not in state.variable or state.variable[id][0] != 'i': Error(state, "unknown state.variable").throw()
-        elif active[0]: m = state.variable[id][1]
+        if id not in state.variable or state.variable[id][0] != 'i': 
+            Error(state, "unknown state.variable").throw()
+        elif active[0]: 
+            m = state.variable[id][1]
     
     return m
 
