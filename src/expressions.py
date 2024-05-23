@@ -3,6 +3,7 @@ from state import State
 from statements import Statement
 from utils import *
 from errors import Error, RuntimeError
+from variable import Variable
 
 def BooleanFactor(state: State, active: list):
     inv = parser.take_next(state, '!')
@@ -11,7 +12,7 @@ def BooleanFactor(state: State, active: list):
 
     parser.next(state)
     
-    if (e[0] == 'i'):	
+    if (e[0] == Variable.INT):	
         if parser.take_string(state, "=="): b = (b == MathExpression(state, active))
         elif parser.take_string(state, "!="): b = (b != MathExpression(state, active))
         elif parser.take_string(state, "<="): b = (b <= MathExpression(state, active))
@@ -54,10 +55,10 @@ def MathFactor(state, active: list):
             Error(state, "missing ')'").throw()
     else: # Variables
         id = parser.take_next_alnum(state)
-        if id not in state.variable or state.variable[id][0] != 'i': 
-            Error(state, "unknown state.variable").throw()
+        if id not in state.variables or state.variables[id][0] != Variable.INT: 
+            Error(state, "unknown state.variables").throw()
         elif active[0]: 
-            m = state.variable[id][1]
+            m = state.variables[id][1]
     
     return m
 
@@ -106,25 +107,26 @@ def String(state: State, active: list):
         if active[0]: s = input()
     else: 
         id = parser.take_next_alnum(state)
-        if id in state.variable and state.variable[id][0] == 's':
-            s = state.variable[id][1]
+        if id in state.variables and state.variables[id][0] == Variable.STRING:
+            s = state.variables[id][1]
         else: 
             Error(state, "not a string").throw()
     return s
 
 def StringExpression(state: State, active: list):
     s = String(state, active)
-    while parser.take_next(state, '+'): s += String(state, active)
+    while parser.take_next(state, '+'): 
+        s += String(state, active)
     return s
 
 def Expression(state: State, active: list):
-    copypc = state.position
+    store_pos = state.position
     id = parser.take_next_alnum(state)
-    state.position = copypc
+    state.position = store_pos
 
-    if parser.next(state) == '\"' or id == "str" or id == "input" or (id in state.variable and state.variable[id][0] == 's'):
-        return ('s', StringExpression(state, active))
-    else: return ('i', MathExpression(state, active))
+    if parser.next(state) == '\"' or id == "str" or id == "input" or (id in state.variables and state.variables[id][0] == Variable.STRING):
+        return (Variable.STRING, StringExpression(state, active))
+    else: return (Variable.INT, MathExpression(state, active))
 
 def Block(state: State, active: list):
     if parser.take_next(state, '{'):
