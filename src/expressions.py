@@ -2,6 +2,7 @@ import parser
 from state import State
 from statements import Statement
 from utils import *
+from errors import Error
 
 def BooleanFactor(state: State, active):
     inv = parser.take_next(state, '!')
@@ -38,16 +39,16 @@ def MathFactor(state, active):
     m = 0
     if parser.take_next(state, '('):
         m = MathExpression(state, active)
-        if not parser.take_next(state, ')'): error(state, "missing ')'")
+        if not parser.take_next(state, ')'): Error(state, "missing ')'").throw()
     elif is_digit(parser.next(state)):
         while is_digit(parser.inspect(state)): m = 10 * m + ord(parser.take(state)) - ord('0') 
     elif parser.take_string(state, "val("):
         s = String(state, active)
         if active[0] and s.isdigit(): m = int(s)
-        if not parser.take_next(state, ')'): error(state, "missing ')'")
+        if not parser.take_next(state, ')'): Error(state, "missing ')'").throw()
     else: 
         id = parser.take_next_alnum(state)
-        if id not in state.variable or state.variable[id][0] != 'i': error(state, "unknown state.variable")
+        if id not in state.variable or state.variable[id][0] != 'i': Error(state, "unknown state.variable").throw()
         elif active[0]: m = state.variable[id][1]
     
     return m
@@ -79,18 +80,24 @@ def String(state: State, active):
     s = ""
     if parser.take_next(state, '\"'):	
         while not parser.take_string(state, "\""):
-            if parser.inspect(state) == '\0': error(state, "unexpected EOF")
-            if parser.take_string(state, "\\n"): s += '\n'
-            else: s += parser.take(state)
+            if parser.inspect(state) == '\0': 
+                Error(state, "unexpected EOF").throw()
+            if parser.take_string(state, "\\n"): 
+                s += '\n'
+            else: 
+                s += parser.take(state)
     elif parser.take_string(state, "str("):
         s = str(MathExpression(state, active))
-        if not parser.take_next(state, ')'): error(state, "missing ')'")
+        if not parser.take_next(state, ')'): 
+            Error(state, "missing ')'").throw()
     elif parser.take_string(state, "input()"):
         if active[0]: s = input()
     else: 
         id = parser.take_next_alnum(state)
-        if id in state.variable and state.variable[id][0] == 's':	s = state.variable[id][1]
-        else: error(state, "not a string")
+        if id in state.variable and state.variable[id][0] == 's':
+            s = state.variable[id][1]
+        else: 
+            Error(state, "not a string").throw()
     return s
 
 def StringExpression(state: State, active):

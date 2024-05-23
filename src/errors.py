@@ -1,11 +1,15 @@
 from state import State
 
-def error(state: State, msg):
-    s = state.source[:state.position].rfind("\n") + 1
-    e = state.source.find("\n", state.position)
+class Error:
+    def __init__(self, state: State, message):
+        self.state = state
+        self.message = message
 
-    line = state.source[:state.position].count("\n") + 1
+    def throw(self, severe: bool = True):
+        s = self.state.source[:self.state.position].rfind("\n") + 1
+        e = self.state.source.find("\n", self.state.position)
+        line = self.state.source[:self.state.position].count("\n") + 1
 
-    print("\nERROR " + msg + " -> Line: " + str(line) + ": '" + state.source[s:state.position] + "_" + state.source[state.position:e] + "'\n")
+        print("\nERROR " + self.message + " -> Line: " + str(line) + ": '" + self.state.source[s:self.state.position] + "_" + self.state.source[self.state.position:e] + "'\n")
 
-    exit(1)
+        if severe: exit(1)

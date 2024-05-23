@@ -35,17 +35,29 @@ def take_string(state: State, word: str):
     return True
 
 def next(state: State):
+    """
+    Returns next non whitespace character
+    """
+
     while WHITE.__contains__(inspect(state)):
         take(state)
     return inspect(state)
 
 def take_next(state: State, c):
+    """
+    Consumes next character if available
+    """
+
     if next(state) == c:
         take(state)
         return True
     return False
 
 def take_next_alnum(state: State):
+    """
+    Returns next alphanumeric string
+    """
+
     alnum = ""
     if is_alpha(next(state)):
         while is_alnum(inspect(state)): alnum += take(state)
