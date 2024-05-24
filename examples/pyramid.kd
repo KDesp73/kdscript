@@ -1,5 +1,5 @@
 # Method to print a star pyramid of user defined height
-func printPyramid {
+func print_pyramid {
     echo "Enter height: "
     height = val(input())
     i = 1
@@ -21,4 +21,4 @@ func printPyramid {
     }
 }
 
-call printPyramid
+call print_pyramid

@@ -2,15 +2,22 @@ from logger import INFO
 from utils import *
 from state import State
 
+def advance(state: State):
+    """
+    Increases the current position by 1
+    """
+
+    state.position += 1
 
 def inspect(state: State):
     """
     Skips comments and returns current character without advancing
     """
 
+    # TODO: handle removing comments with preproccessor
     if state.source[state.position] == '#':
         while state.source[state.position] != '\n' and state.source[state.position] != '\0':
-            state.position += 1
+            advance(state)
 
     return state.source[state.position]
 
@@ -20,7 +27,7 @@ def take(state: State):
     """
 
     c = inspect(state)
-    state.position += 1;
+    advance(state);
     return c
 
 def take_string(state: State, word: str):
@@ -30,7 +37,9 @@ def take_string(state: State, word: str):
 
     copypc = state.position
     for c in word:
-        if take(state) != c: 
+        next_char = inspect(state)
+        advance(state)
+        if next_char != c: 
             state.position = copypc
             return False
     return True

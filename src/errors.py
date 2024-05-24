@@ -1,10 +1,11 @@
 from state import State
 from logger import ERRO
+from utils import line_from_position
 
 def print_error(state: State, message, tag: str):
         s = state.source[:state.position].rfind("\n") + 1
         e = state.source.find("\n", state.position)
-        line = state.source[:state.position].count("\n") + 1
+        line = line_from_position(state.source, state.position)
         print(tag + ": " + message + " -> Line: " + str(line) + ": '" + state.source[s:state.position] + "_" + state.source[state.position:e] + "'\n")
 
 class Error:
