@@ -137,14 +137,6 @@ def Expression(state: State, active: list):
     id = parser.take_next_alnum(state)
     state.position = store_pos
 
-    if parser.next(state) == '\"' or id == "str" or id == "input" or (id in state.variable and state.variable[id][0] == 's'):
-        return ('s', StringExpression(state, active))
-    else:
-        var = MathExpression(state, active)
-        if is_float(var): return ('f', var)
-        else: return ('i', var)
-
-
     if parser.next(state) == '\"' or id == "str" or id == "input" or (id in state.variables and state.variables[id][0] == Variable.STRING):
         return (Variable.STRING, StringExpression(state, active))
     else: 
