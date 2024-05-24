@@ -1,3 +1,4 @@
+from keywords import KEYWORDS
 from state import State
 import parser
 from errors import Error
@@ -7,7 +8,13 @@ def do_assign(state: State, active: list):
     from expressions import Expression
 
     id = parser.take_next_alnum(state)
-    if not parser.take_next(state, '=') or id == "": Error(state, "unknown statement").throw()
+    
+    if not parser.take_next(state, '=') or id == "": 
+        Error(state, "unknown statement").throw()
+
+    if id in KEYWORDS:
+        Error(state, f"{id} is a reserved keyword").throw()
+
     e = Expression(state, active)
     if active[0] or id not in state.variables:
         state.variables[id] = e

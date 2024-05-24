@@ -1,9 +1,11 @@
+from logger import DEBU
 import parser
 from state import State
 from statements import Statement
 from utils import *
 from errors import Error, RuntimeError
 from variable import Variable
+from keywords import KEYWORDS
 
 def BooleanFactor(state: State, active: list):
     inv = parser.take_next(state, '!')
@@ -36,7 +38,7 @@ def BooleanExpression(state: State, active: list):
     while parser.take_next(state, '|'): b = b | BooleanTerm(state, active)
     return b
 
-def MathFactor(state, active: list):
+def MathFactor(state: State, active: list):
     m = 0
     m_dec = 0
     is_dec = False
@@ -62,16 +64,22 @@ def MathFactor(state, active: list):
             if s.isdigit(): m = int(s)
             elif is_float(s): 
                 m = float(s)
-            else: RuntimeError(state, "input not a number").throw()
+            else: RuntimeError(state, "input is not a number").throw()
         if not parser.take_next(state, ')'): Error(state, "missing ')'").throw()
     else: # Variables
         id = parser.take_next_alnum(state)
-        if (
-                id not in state.variables or 
-                (state.variables[id][0] != Variable.INT and state.variables[id][0] != Variable.FLOAT)
-            ): 
-            Error(state, "unknown state.variable").throw()
-        elif active[0]: m = state.variables[id][1]
+
+        if id in KEYWORDS:
+            Error(state, f"{id} is a reserved keyword").throw()
+
+        if id not in state.variables:
+            Error(state, f"{id} is not defined").throw()
+
+        if state.variables[id][0] != Variable.INT and state.variables[id][0] != Variable.FLOAT:
+            Error(state, f"Variable {id} is not a number").throw()
+
+        if active[0]:
+            m = state.variables[id][1]
     
     return m
 
@@ -85,6 +93,7 @@ def MathTerm(state: State, active: list):
         else: 
             if m2 == 0:
                 RuntimeError(state, "Division by zero").throw()
+
             m = m / m2
 
     return m
@@ -117,7 +126,8 @@ def String(state: State, active: list):
         if not parser.take_next(state, ')'): 
             Error(state, "missing ')'").throw()
     elif parser.take_string(state, "input()"):
-        if active[0]: s = input()
+        if active[0]:
+            s = input()
     else: 
         id = parser.take_next_alnum(state)
         if id in state.variables and state.variables[id][0] == Variable.STRING:

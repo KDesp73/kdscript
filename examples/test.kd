@@ -1,1 +1,10 @@
 echo "Hello" echo " World\n"
+
+func test {
+    echo "Hello\n"
+    if 1 {
+        esc
+    }
+    echo "World\n"
+}
+
