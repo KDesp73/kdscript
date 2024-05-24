@@ -67,11 +67,11 @@ def MathFactor(state, active: list):
     else: # Variables
         id = parser.take_next_alnum(state)
         if (
-                id not in state.variable or 
-                (state.variable[id][0] != Variable.INT and state.variable[id][0] != Variable.FLOAT)
+                id not in state.variables or 
+                (state.variables[id][0] != Variable.INT and state.variables[id][0] != Variable.FLOAT)
             ): 
             Error(state, "unknown state.variable").throw()
-        elif active[0]: m = state.variable[id][1]
+        elif active[0]: m = state.variables[id][1]
     
     return m
 

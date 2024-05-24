@@ -1,0 +1,13 @@
+func divisionByZero {
+    a = 4
+
+    while a >= 0 {
+        b = 12 / a
+        echo "a: ", a, "\n"
+        echo "b: ", b, "\n"
+
+        a = a - 1
+    }
+}
+
+call divisionByZero
