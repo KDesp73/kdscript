@@ -3,7 +3,6 @@ from state import State
 from statements import Statement
 from utils import *
 from errors import Error, RuntimeError
-import re
 
 def BooleanFactor(state: State, active: list):
     inv = parser.take_next(state, '!')
@@ -60,12 +59,12 @@ def MathFactor(state, active: list):
         s = String(state, active)
         if active[0]:
             if s.isdigit(): m = int(s)
-            elif re.match("^[0-9]*\.[0-9]*$", s) != None : 
+            elif is_float(s): 
                 m = float(s)
         if not parser.take_next(state, ')'): Error(state, "missing ')'").throw()
     else: 
         id = parser.take_next_alnum(state)
-        if id not in state.variable or state.variable[id][0] != 'i': Error(state, "unknown state.variable").throw()
+        if id not in state.variable or (state.variable[id][0] != 'i' and state.variable[id][0] != 'f'): Error(state, "unknown state.variable").throw()
         elif active[0]: m = state.variable[id][1]
     
     return m
@@ -133,7 +132,10 @@ def Expression(state: State, active: list):
 
     if parser.next(state) == '\"' or id == "str" or id == "input" or (id in state.variable and state.variable[id][0] == 's'):
         return ('s', StringExpression(state, active))
-    else: return ('i', MathExpression(state, active))
+    else:
+        var = MathExpression(state, active)
+        if is_float(var): return ('f', var)
+        else: return ('i', var)
 
 def Block(state: State, active: list):
     if parser.take_next(state, '{'):

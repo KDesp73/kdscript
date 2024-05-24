@@ -1,3 +1,4 @@
+import re
 WHITE = [' ', '\t', '\n', '\r']
 
 def read_file(path):
@@ -13,7 +14,7 @@ def read_file(path):
     return source
 
 def is_digit(c): return (c >= '0' and c <= '9')
-def is_float(c): return (c >= '0' and c <= '9' or c == '.')
+def is_float(c): return (re.match("^[0-9]*\.[0-9]*$", str(c)) != None)
 def is_alpha(c): return (c >= 'a' and c <= 'z') or (c >= 'A' and c <= 'Z')
 def is_alnum(c): return is_digit(c) or is_alpha(c)
 def is_add_op(c): return (c == '+' or c == '-')
