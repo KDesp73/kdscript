@@ -1,7 +1,10 @@
 from utils import read_file
 
 class State:
-    variable = {}
+    variables = {}
+    # TODO: updated these accordingly
+    # line = 1
+    # column = 1
 
     def __init__(self, file, position):
         self.file = file
