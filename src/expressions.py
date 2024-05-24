@@ -38,27 +38,40 @@ def BooleanExpression(state: State, active: list):
 
 def MathFactor(state, active: list):
     m = 0
+    m_dec = 0
+    is_dec = False
     if parser.take_next(state, '('): # complex expression
         m = MathExpression(state, active)
         if not parser.take_next(state, ')'): Error(state, "missing ')'").throw()
     elif is_digit(parser.next(state)): # number
-        while is_digit(parser.inspect(state)): 
-            m = 10 * m + ord(parser.take(state)) - ord('0') 
+        while is_digit(parser.inspect(state)) or parser.inspect(state) == '.': 
+            c = parser.take(state)
+            
+            if c == '.': 
+                is_dec = True
+                continue
+            if not is_dec:
+                m = 10 * m + ord(c) - ord('0') 
+            else:
+                m_dec = 10 * m_dec + ord(c) - ord('0') 
+        if is_dec:
+            m = m + ( m_dec/(len(str(m_dec)*10)) )
     elif parser.take_string(state, "val("): # string to num
         s = String(state, active)
         if active[0]:
-            if s.isdigit(): 
-                m = int(s)
-            else:
-                RuntimeError(state, "input not a number").throw()
-        if not parser.take_next(state, ')'): 
-            Error(state, "missing ')'").throw()
+            if s.isdigit(): m = int(s)
+            elif is_float(s): 
+                m = float(s)
+            else: RuntimeError(state, "input not a number").throw()
+        if not parser.take_next(state, ')'): Error(state, "missing ')'").throw()
     else: # Variables
         id = parser.take_next_alnum(state)
-        if id not in state.variables or state.variables[id][0] != Variable.INT: 
-            Error(state, "unknown state.variables").throw()
-        elif active[0]: 
-            m = state.variables[id][1]
+        if (
+                id not in state.variable or 
+                (state.variable[id][0] != Variable.INT and state.variable[id][0] != Variable.FLOAT)
+            ): 
+            Error(state, "unknown state.variable").throw()
+        elif active[0]: m = state.variable[id][1]
     
     return m
 
@@ -126,7 +139,10 @@ def Expression(state: State, active: list):
 
     if parser.next(state) == '\"' or id == "str" or id == "input" or (id in state.variables and state.variables[id][0] == Variable.STRING):
         return (Variable.STRING, StringExpression(state, active))
-    else: return (Variable.INT, MathExpression(state, active))
+    else: 
+        var = MathExpression(state, active)
+        if is_float(var): return (Variable.FLOAT, var)
+        else: return (Variable.INT, var)
 
 def Block(state: State, active: list):
     if parser.take_next(state, '{'):
