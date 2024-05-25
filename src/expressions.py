@@ -61,7 +61,8 @@ def MathFactor(state: State, active: list):
     elif parser.take_string(state, "val("): # string to num
         s = String(state, active)
         if active[0]:
-            if s.isdigit(): m = int(s)
+            if is_int(s): 
+                m = int(s)
             elif is_float(s): 
                 m = float(s)
             else: RuntimeError(state, "input is not a number").throw()
