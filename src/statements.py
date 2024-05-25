@@ -9,4 +9,5 @@ def Statement(state: State, active: list):
     elif parser.take_string(state, Keyword.ESC): do_break(active) 
     elif parser.take_string(state, Keyword.CALL): do_call(state, active)
     elif parser.take_string(state, Keyword.FUNC): do_func_def(state)
+    elif parser.take_string(state, Keyword.EXIT): do_exit(state, active)
     else: do_assign(state, active)

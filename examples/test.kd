@@ -1,10 +1,10 @@
-echo "Hello" echo " World\n"
-
 func test {
+    a = 1
     echo "Hello\n"
-    if 1 {
-        esc
+    if a {
+        exit a
     }
     echo "World\n"
 }
 
+call test

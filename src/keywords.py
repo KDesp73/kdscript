@@ -9,6 +9,7 @@ class Keyword:
     VAL = "val"
     STR = "str"
     ECHO = "echo"
+    EXIT = "exit"
 
 
 
@@ -22,4 +23,5 @@ KEYWORDS = [
     Keyword.INPUT,
     Keyword.VAL,
     Keyword.STR,
+    Keyword.EXIT
 ]

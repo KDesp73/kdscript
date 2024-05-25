@@ -1,8 +1,35 @@
+import sys
 from keywords import KEYWORDS
 from state import State
 import parser
-from errors import Error
+from errors import TODO, Error
+from utils import is_int
 from variable import Variable
+
+def do_exit(state: State, active: list):
+    from expressions import MathExpression
+
+    id = parser.take_next_alnum(state)
+
+    if active[0] and id != '':
+        if id not in state.variables: 
+            Error(state, "unknown variable").throw()
+
+        if state.variables[id][0] != Variable.INT:
+            Error(state, "variable type not an int").throw()
+
+
+    if id != '':
+        value = state.variables[id][1]
+    else:
+        value = MathExpression(state, active)
+    
+    if active[0] and not isinstance(value, int):
+        Error(state, "expression is not an integer").throw()
+
+    if active[0]:
+        sys.exit(int(value))
+
 
 def do_assign(state: State, active: list):
     from expressions import Expression
@@ -34,7 +61,7 @@ def do_call(state: State, active: list):
 
     id = parser.take_next_alnum(state)
     if id not in state.variables or state.variables[id][0] != Variable.METHOD: 
-        Error(state, "unknown funcroutine").throw()
+        Error(state, "unknown function").throw()
     ret = state.position
     state.position = state.variables[id][1]
     if active[0]:
