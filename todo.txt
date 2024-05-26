@@ -1,5 +1,5 @@
 TODO: method arguments
 TODO: return values from methods
-TODO: preproccessor
-TODO: # in string breaks acts as the start of a comment
 TODO: dont allow multiple statements in the same line
+DONE: preproccessor
+DONE: # in string breaks acts as the start of a comment
