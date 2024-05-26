@@ -2,7 +2,11 @@
 
 ## Pre-defined methods
 
-- echo {"Hello" | a | 4.1 }
+- echo "Hello World"
+- exit `exit-code` (int)
+
+- run "path/to/script" -- Run external kd script (maybe handled by the preprocessor)
+
 - input() -- Should change
 - val(expression) -- Should change
 - str(expression) -- Should change
@@ -27,10 +31,10 @@ while condition {
 }
 ```
 
-- run-while (do-while)
+- do-while
 
 ```
-run {
+do {
 
 } while condition
 ```
@@ -64,8 +68,8 @@ a = call name <- 1.3
 ## Preprocessor
 
 ```
-#import "path/to/file"
-
+#import "path/to/file" -- Include methods from file
 #assign A 2
+#run "path/to/file" -- Run file as script
 ```
 

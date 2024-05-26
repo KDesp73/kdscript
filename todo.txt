@@ -2,7 +2,15 @@ TODO: method arguments
 TODO: return values from methods
 TODO: dont allow multiple statements in the same line
 TODO: arrays
-TODO: mod
 TODO: differenciate return and esc
+TODO: variable scope
+TODO: do-while
+TODO: for
+TODO: boolean values
+TODO: preprocessor tags (import, assign)
+TODO: run keyword
+TODO: type keywords for casting
+TODO: casting
 DONE: preproccessor
 DONE: # in string breaks acts as the start of a comment
+DONE: mod
