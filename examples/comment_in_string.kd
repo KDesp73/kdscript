@@ -1,1 +1,5 @@
-echo "hello # world\n"
+# This should be removed
+
+echo "hello # world\n" # this should be removed
+
+# This should be removed

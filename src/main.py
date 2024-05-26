@@ -1,4 +1,5 @@
-from logger import ERRO
+from logger import ERRO, INFO
+from preprocessor import Preprocessor
 from state import State
 from expressions import Program
 import argparse
@@ -23,7 +24,11 @@ def main():
         ERRO("Invalid file extension", "Use '*.kd'")
         exit(1)
 
-    Program(State(args.filename, 0))
+    file = args.filename
+    preprocessor = Preprocessor(file)
+    preprocessor.run()
+
+    Program(State(file, preprocessor.source))
 
 
 if __name__ == "__main__":

@@ -7,11 +7,13 @@ def read_file(path):
     except: 
         print("ERROR: Can't find source file \'" + path + "\'.")
         exit(1)
-
     source = f.read() + '\0'
     f.close()
-    
     return source
+
+def write_to_file(filename, text):
+    with open(filename, 'w') as file:
+        file.write(text)
 
 def is_digit(c): return (c >= '0' and c <= '9')
 def is_float(c): return (re.match(r"^[0-9]*\.[0-9]*$", str(c)) != None)
