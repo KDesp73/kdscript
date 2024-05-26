@@ -11,9 +11,9 @@ def LOG(status, msg, hint = ""):
         the print contents
     """
 
-    print(f"[{status}] {msg}.", end="")
+    print(f"[{status}] {msg}", end="")
     if hint != "":
-        print(f" Hint: {hint}")
+        print(f". Hint: {hint}")
     else:
         print("")
 

@@ -101,15 +101,23 @@ def MathTerm(state: State, active: list):
 
 def MathExpression(state: State, active: list):
     c = parser.next(state)
+
     if is_add_op(c):
         c = parser.take(state)
+
     m = MathTerm(state, active)
-    if c == '-': m = -m
+
+    if c == '-':
+        m = -m
+
     while is_add_op(parser.next(state)):
         c = parser.take(state)
         m2 = MathTerm(state, active)
-        if c == '+': m = m + m2
-        else: m = m - m2
+
+        if c == '+':
+            m = m + m2
+        else:
+            m = m - m2
     return m
 
 def String(state: State, active: list):

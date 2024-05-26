@@ -1,9 +1,10 @@
 func test {
-    a = 1
+    a = 1 + 2
+    echo a, "\n"
     echo "Hello\n"
-    if a {
-        exit a
-    }
+    
+    exit a + 1
+
     echo "World\n"
 }
 
