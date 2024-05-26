@@ -3,7 +3,7 @@ func test {
     echo a, "\n"
     echo "Hello\n"
     
-    exit a + 1
+    exit a - 2
 
     echo "World\n"
 }
