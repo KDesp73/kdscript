@@ -20,7 +20,7 @@ def is_float(c): return (re.match(r"^[0-9]*\.[0-9]*$", str(c)) != None)
 def is_alpha(c): return (c >= 'a' and c <= 'z') or (c >= 'A' and c <= 'Z')
 def is_alnum(c): return is_digit(c) or is_alpha(c) or c == '_'
 def is_add_op(c): return (c == '+' or c == '-')
-def is_mul_op(c): return (c == '*' or c == '/')
+def is_mul_op(c): return (c == '*' or c == '/' or c == '%')
 def is_int(s: str):
     try:
         int(s)

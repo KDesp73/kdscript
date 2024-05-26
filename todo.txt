@@ -1,5 +1,8 @@
 TODO: method arguments
 TODO: return values from methods
 TODO: dont allow multiple statements in the same line
+TODO: arrays
+TODO: mod
+TODO: differenciate return and esc
 DONE: preproccessor
 DONE: # in string breaks acts as the start of a comment

@@ -91,11 +91,13 @@ def MathTerm(state: State, active: list):
         m2 = MathFactor(state, active)
         if c == '*': 
             m = m * m2
-        else: 
-            if m2 == 0:
-                RuntimeError(state, "Division by zero").throw()
-
-            m = m / m2
+        elif c == '/': 
+            if active[0]: 
+                if m2 == 0:
+                    RuntimeError(state, "Division by zero").throw()
+                m = m / m2
+        elif c == '%':
+            m = m % m2
 
     return m
 

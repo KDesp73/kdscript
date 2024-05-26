@@ -10,4 +10,12 @@ func divisionByZero {
     }
 }
 
-call divisionByZero
+func mod_example {
+    i = 0
+    while i < 20 {
+        echo i % 5, "\n"
+        i = i + 1
+    }
+}
+
+call mod_example
