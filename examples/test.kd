@@ -1,11 +1,15 @@
+a = 1
+
 func test {
     a = 1 + 2
     echo a, "\n"
     echo "Hello\n"
     
-    exit a - 2
+    # exit a - 2
 
     echo "World\n"
 }
 
+
 call test
+echo "a: ", a ,"\n"

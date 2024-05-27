@@ -16,5 +16,13 @@ func mod_example {
     }
 }
 
-#call mod_example
-call divisionByZero
+func float_example {
+    a = 3
+    echo "a: ", a, "\n"
+    a = a + 0.1
+    echo "a: ", a, "\n"
+}
+
+# call mod_example
+# call divisionByZero
+call float_example

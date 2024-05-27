@@ -29,15 +29,22 @@ def run_assign(state: State, active: list):
         Error(state, f"{id} is a reserved keyword").throw()
 
     e = Expression(state, active)
-    if active[0] or id not in state.variables:
-        state.variables[id] = e
+    # if active[0] or id not in state.variables:
+    #     state.variables[id] =  e
+
+    if active[0]:
+        state.scope.set_variable(id, e)
 
 def run_func_def(state: State):
     from expressions import Block
 
     id = parser.take_next_alnum(state)
-    if id == "": Error(state, "missing funcroutine identifier").throw()
-    state.variables[id] = (Variable.METHOD, state.position)
+    
+    if id == "": 
+        Error(state, "missing funcroutine identifier").throw()
+
+    # state.variables[id] = (Variable.METHOD, state.position)
+    state.scope.set_variable(id, (Variable.METHOD, state.position))
 
     # Skip block inactively
     Block(state, [False])
@@ -46,34 +53,52 @@ def run_call(state: State, active: list):
     from expressions import Block
 
     id = parser.take_next_alnum(state)
-    if id not in state.variables or state.variables[id][0] != Variable.METHOD: 
-        Error(state, "unknown function").throw()
+
+    # if id not in state.variables or state.variables[id][0] != Variable.METHOD: 
+    #     Error(state, "unknown function").throw()
+
     ret = state.position
-    state.position = state.variables[id][1]
+    
+    # state.position = state.variables[id][1]
+    method = state.scope.get_variable(id)
+    if method[0] == Variable.NULL:
+        Error(state, "unknown function").throw()
+
+    state.position = method[1]
+    
     if active[0]:
-        Block(state, active)
+        state.scope.call_function(Block, state, active)
+        # Block(state, active)
+    
     state.position = ret
 
 def run_if_else(state: State, active: list):
     from expressions import BooleanExpression, Block
 
     b = BooleanExpression(state, active)
-    if active[0] and b: Block(state, active)
-    else: Block(state, [False])
+    if active[0] and b: 
+        Block(state, active)
+    else:
+        Block(state, [False])
+    
     parser.next(state)
+    
     if parser.take_string(state, "else"):
         if active[0] and not b:
             Block(state, active)
-        else: Block(state, [False])
+        else:
+            Block(state, [False])
 
 def run_while(state: State, active: list):
     from expressions import BooleanExpression, Block
 
     local = [active[0]]
     position_while = state.position
+
     while BooleanExpression(state, local):
         Block(state, local)
         state.position = position_while
+    
     Block(state, [False])
 
 def run_echo(state: State, active: list):
@@ -86,3 +111,5 @@ def run_echo(state: State, active: list):
 
 def run_break(active: list):
     if active[0]: active[0] = False
+
+
