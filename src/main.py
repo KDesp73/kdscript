@@ -27,8 +27,6 @@ def main():
     file = args.filename
     preprocessor = Preprocessor(file)
     preprocessor.run()
-
-    preprocessor.print_enumarated()
         
     Program(State(file, preprocessor.source))
 

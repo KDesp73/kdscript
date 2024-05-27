@@ -41,7 +41,7 @@ def BooleanExpression(state: State, active: list):
 def MathFactor(state: State, active: list):
     m = 0
     m_dec = 0
-    is_dec = False
+    is_floating = False
     if parser.take_next(state, '('): # complex expression
         m = MathExpression(state, active)
         if not parser.take_next(state, ')'): Error(state, "missing ')'").throw()
@@ -50,14 +50,16 @@ def MathFactor(state: State, active: list):
             c = parser.take(state)
             
             if c == '.': 
-                is_dec = True
+                is_floating = True
                 continue
-            if not is_dec:
+
+            if not is_floating:
                 m = 10 * m + ord(c) - ord('0') 
             else:
                 m_dec = 10 * m_dec + ord(c) - ord('0') 
-        if is_dec:
-            m = m + ( m_dec/(len(str(m_dec)*10)) )
+        if is_floating:
+            divisor = 10 ** len(str(m_dec))
+            m = m + m_dec / divisor
     elif parser.take_string(state, "val("): # string to num
         s = String(state, active)
         if active[0]:
