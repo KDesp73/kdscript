@@ -42,6 +42,9 @@ def run_func_def(state: State):
     if id == "": 
         Error(state, "missing function identifier").throw()
 
+    if state.scope.scopes.head != state.scope.current_scope:
+        Error(state, "cannot define a function inside another function").throw()
+
     state.scope.set_variable(id, (Variable.METHOD, state.position))
 
     # Skip block inactively

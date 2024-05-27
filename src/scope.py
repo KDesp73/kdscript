@@ -4,8 +4,6 @@ from typing import Optional, Tuple
 from variable import Variable
 
 class Scope:
-    GLOBAL_SCOPE = '#global'
-
     def __init__(self):
         self.scopes = LinkedList()
         self.scopes.insertAtBegin({})
