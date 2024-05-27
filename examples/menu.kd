@@ -1,0 +1,51 @@
+func home {
+    echo "Home selected\n"
+}
+
+func settings {
+    echo "Settings selected\n"
+}
+
+func about {
+    echo "About selected\n"
+}
+
+func exit {
+    echo "Exiting...\n"
+}
+
+func menu {
+    echo "1. Home\n"
+    echo "2. Settings\n"
+    echo "3. About\n"
+    echo "4. Exit\n"
+    echo "> "
+    choice = val(input())
+    
+    while choice < 1 | choice > 4 {
+        echo "> "
+        choice = val(input())
+    }
+
+    if choice == 4 {
+        call exit 
+        esc
+    }
+
+
+    if choice == 1 {
+        call home
+    }
+
+    if choice == 2 {
+        call settings 
+    }
+
+    if choice == 3 {
+        call about
+    }
+    
+    call menu
+}
+
+call menu

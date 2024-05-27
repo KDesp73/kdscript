@@ -11,13 +11,8 @@ def advance(state: State):
 
 def inspect(state: State):
     """
-    Skips comments and returns current character without advancing
+    Returns current character without advancing
     """
-
-    # TODO: handle removing comments with preproccessor
-    if state.source[state.position] == '#':
-        while state.source[state.position] != '\n' and state.source[state.position] != '\0':
-            advance(state)
 
     return state.source[state.position]
 

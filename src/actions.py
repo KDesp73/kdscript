@@ -1,18 +1,38 @@
+import sys
+from keywords import KEYWORDS
 from state import State
 import parser
 from errors import Error
 from variable import Variable
 
-def do_assign(state: State, active: list):
+def run_exit(state: State, active: list):
+    from expressions import Expression
+
+    value = Expression(state, active)[1]
+    
+    if active[0] and not isinstance(value, int):
+        Error(state, "expression is not an integer").throw()
+
+    if active[0]:
+        sys.exit(int(value))
+
+
+def run_assign(state: State, active: list):
     from expressions import Expression
 
     id = parser.take_next_alnum(state)
-    if not parser.take_next(state, '=') or id == "": Error(state, "unknown statement").throw()
+    
+    if not parser.take_next(state, '=') or id == "": 
+        Error(state, "unknown statement").throw()
+
+    if id in KEYWORDS:
+        Error(state, f"{id} is a reserved keyword").throw()
+
     e = Expression(state, active)
     if active[0] or id not in state.variables:
         state.variables[id] = e
 
-def do_func_def(state: State):
+def run_func_def(state: State):
     from expressions import Block
 
     id = parser.take_next_alnum(state)
@@ -22,19 +42,19 @@ def do_func_def(state: State):
     # Skip block inactively
     Block(state, [False])
 
-def do_call(state: State, active: list):
+def run_call(state: State, active: list):
     from expressions import Block
 
     id = parser.take_next_alnum(state)
     if id not in state.variables or state.variables[id][0] != Variable.METHOD: 
-        Error(state, "unknown funcroutine").throw()
+        Error(state, "unknown function").throw()
     ret = state.position
     state.position = state.variables[id][1]
     if active[0]:
         Block(state, active)
     state.position = ret
 
-def do_if_else(state: State, active: list):
+def run_if_else(state: State, active: list):
     from expressions import BooleanExpression, Block
 
     b = BooleanExpression(state, active)
@@ -46,7 +66,7 @@ def do_if_else(state: State, active: list):
             Block(state, active)
         else: Block(state, [False])
 
-def do_while(state: State, active: list):
+def run_while(state: State, active: list):
     from expressions import BooleanExpression, Block
 
     local = [active[0]]
@@ -56,7 +76,7 @@ def do_while(state: State, active: list):
         state.position = position_while
     Block(state, [False])
 
-def do_echo(state: State, active: list):
+def run_echo(state: State, active: list):
     from expressions import Expression
 
     while True:
@@ -64,5 +84,5 @@ def do_echo(state: State, active: list):
         if active[0]: print(e[1], end="")
         if not parser.take_next(state, ','): return
 
-def do_break(active: list):
+def run_break(active: list):
     if active[0]: active[0] = False

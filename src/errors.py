@@ -22,3 +22,7 @@ class RuntimeError(Error):
     def __init__(self, state: State, message):
          super().__init__(state, message)
          self.TAG = "RuntimeError"
+
+def TODO():
+    ERRO("Not implemented yet")
+    exit(1)
