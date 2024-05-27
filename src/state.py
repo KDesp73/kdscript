@@ -1,7 +1,9 @@
+from scope import Scope
 from utils import read_file
 
 class State:
     variables = {}
+
     # TODO: updated these accordingly
     # line = 1
     # column = 1

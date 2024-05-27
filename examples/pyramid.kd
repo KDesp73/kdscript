@@ -21,4 +21,4 @@ func print_pyramid {
     }
 }
 
-call print_pyramid <- x, 2, 3
+call print_pyramid

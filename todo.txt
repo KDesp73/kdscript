@@ -11,6 +11,10 @@ TODO: preprocessor tags (import, assign)
 TODO: run keyword
 TODO: type keywords for casting
 TODO: casting
+TODO: handle Ctrl+C
+TODO: documentation
+TODO: better readme
+TODO: C port
 DONE: preproccessor
 DONE: # in string breaks acts as the start of a comment
 DONE: mod

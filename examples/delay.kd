@@ -1,0 +1,10 @@
+func delay {
+    echo "Started...\n"
+    i = 100000
+    while i > 0 {
+        i = i - 1
+    }
+    echo "Finished\n"
+}
+
+call delay
