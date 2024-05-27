@@ -8,6 +8,7 @@ def advance(state: State):
     """
 
     state.position += 1
+    state.line = line_from_position(state.source, state.position)
 
 def inspect(state: State):
     """

@@ -8,27 +8,39 @@ class Preprocessor:
 
     def remove_comments(self):
         string_pattern = re.compile(r'(["\'])(?:(?=(\\?))\2.)*?\1')
-        comment_pattern = re.compile(r'#.*')
+        comment_pattern = re.compile(r'^\s*#.*$')
 
         def remove_comment_from_line(line):
+            if comment_pattern.match(line):
+                return ""
             matches = list(string_pattern.finditer(line))
-            
             result = []
             last_end = 0
+            in_string = False
 
             for match in matches:
-                result.append(re.sub(comment_pattern, '', line[last_end:match.start()]))
-                result.append(match.group(0))
+                if in_string:
+                    result.append(line[last_end:match.end()])
+                else:
+                    result.append(re.sub(comment_pattern, '', line[last_end:match.start()]))
+                    result.append(match.group(0))
                 last_end = match.end()
+                if line[last_end - 1] in ('"', "'"):
+                    in_string = not in_string
 
-            result.append(re.sub(comment_pattern, '', line[last_end:]))
+            if in_string:
+                result.append(line[last_end:])
+            else:
+                result.append(re.sub(comment_pattern, '', line[last_end:]))
 
             return ''.join(result)
+
 
         processed_lines = []
         for line in self.source.split('\n'):
             processed_line = remove_comment_from_line(line)
-            processed_lines.append(processed_line)
+            if processed_line:
+                processed_lines.append(processed_line)
 
         self.source = '\n'.join(processed_lines)
 
@@ -41,6 +53,5 @@ class Preprocessor:
 
     def run(self):
         self.remove_comments()
-        # self.remove_empty_lines()
 
 

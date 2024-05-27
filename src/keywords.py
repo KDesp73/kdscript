@@ -12,16 +12,4 @@ class Keyword:
     EXIT = "exit"
 
 
-
-KEYWORDS = [
-    Keyword.FUNC,
-    Keyword.CALL,
-    Keyword.IF,
-    Keyword.ELSE,
-    Keyword.WHILE,
-    Keyword.ESC,
-    Keyword.INPUT,
-    Keyword.VAL,
-    Keyword.STR,
-    Keyword.EXIT
-]
+KEYWORDS = [attr for attr in dir(Keyword) if not callable(getattr(Keyword, attr)) and not attr.startswith("__")]

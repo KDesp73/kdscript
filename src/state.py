@@ -1,3 +1,4 @@
+from logger import DEBU
 from scope import Scope
 from utils import read_file
 
@@ -15,11 +16,11 @@ class State:
         self.scope = Scope()
 
         # TODO: updated these accordingly
-        # self.line = 1
+        self.line = 1
         # self.column = 1
 
 
 def debug(state: State):
-    print("---")
+    DEBU(f"Line: {state.line}")
     state.scope.scopes.printLL()
     input()
