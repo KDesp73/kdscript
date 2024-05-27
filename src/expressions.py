@@ -1,6 +1,6 @@
 from logger import DEBU, INFO
 import parser
-from state import State
+from state import State, debug
 from statements import Statement
 from utils import *
 from errors import Error, RuntimeError

@@ -1,12 +1,11 @@
-func divisionByZero {
-    a = 4
-    while a >= 0 {
-        b = 12 / a
-        echo 12, "/", a, "=", b, "\n"
-
-        a = a - 1
-    }
-}
+# func divisionByZero {
+#     a = 4
+#     while a >= 0 {
+#         b = 12 / a
+#         echo 12, "/", a, "=", b, "\n"
+#         a = a - 1
+#     }
+# }
 
 func mod_example {
     i = 0
@@ -17,12 +16,11 @@ func mod_example {
 }
 
 func float_example {
-    a = 3
+    a = 2.91
     echo "a: ", a, "\n"
     a = a + 0.1
     echo "a: ", a, "\n"
 }
 
 # call mod_example
-# call divisionByZero
 call float_example

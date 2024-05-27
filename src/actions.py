@@ -32,6 +32,7 @@ def run_assign(state: State, active: list):
 
     if active[0]:
         state.scope.set_variable(id, e)
+        # debug(state)
 
 
 def run_func_def(state: State):
@@ -46,6 +47,7 @@ def run_func_def(state: State):
         Error(state, "cannot define a function inside another function").throw()
 
     state.scope.set_variable(id, (Variable.METHOD, state.position))
+    # debug(state)
 
     # Skip block inactively
     Block(state, [False])

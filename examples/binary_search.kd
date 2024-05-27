@@ -21,4 +21,10 @@ while guess != number {
     tries = tries + 1
 }
 
-echo "You found the number in ", tries, " tries!\n"
+echo "You found the number in ", tries
+if tries > 1 {
+    echo " tries"    
+} else {
+    echo " try"
+}
+echo "\n"

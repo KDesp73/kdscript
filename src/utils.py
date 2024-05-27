@@ -30,3 +30,7 @@ def is_int(s: str):
 
 def line_from_position(code: str, position: int):
     return code[:position].count("\n") + 1
+
+
+def count_digits(number):
+    return len(str(number).replace('-', '').replace('.', '').replace('e', '').replace('+', ''))

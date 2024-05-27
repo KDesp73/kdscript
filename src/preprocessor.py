@@ -1,48 +1,41 @@
 import re
-from utils import read_file
+from utils import count_digits, read_file
 
 class Preprocessor:
     def __init__(self, file):
         self.file = file
         self.source = read_file(file)
 
-    def remove_comments(self):
-        string_pattern = re.compile(r'(["\'])(?:(?=(\\?))\2.)*?\1')
-        comment_pattern = re.compile(r'^\s*#.*$')
-
-        def remove_comment_from_line(line):
-            if comment_pattern.match(line):
-                return ""
-            matches = list(string_pattern.finditer(line))
-            result = []
-            last_end = 0
-            in_string = False
-
-            for match in matches:
-                if in_string:
-                    result.append(line[last_end:match.end()])
-                else:
-                    result.append(re.sub(comment_pattern, '', line[last_end:match.start()]))
-                    result.append(match.group(0))
-                last_end = match.end()
-                if line[last_end - 1] in ('"', "'"):
-                    in_string = not in_string
-
-            if in_string:
-                result.append(line[last_end:])
-            else:
-                result.append(re.sub(comment_pattern, '', line[last_end:]))
-
-            return ''.join(result)
-
-
-        processed_lines = []
+    def print_enumarated(self):
+        i = 1
         for line in self.source.split('\n'):
-            processed_line = remove_comment_from_line(line)
-            if processed_line:
-                processed_lines.append(processed_line)
+            print(i, end="")
+            print(" " * (5-count_digits(i)) , end="")
+            print(line)
+            i += 1
+        print()
+    
 
-        self.source = '\n'.join(processed_lines)
+    def remove_comments(self):
+        in_string = False
+        result = []
+
+        for line in self.source.split('\n'):
+            new_line = ''
+            i = 0
+            while i < len(line):
+                if line[i] == '"' and (i == 0 or line[i - 1] != '\\'):
+                    in_string = not in_string
+                
+                if not in_string and line[i] == '#':
+                    break
+                else:
+                    new_line += line[i]
+                i += 1 
+
+            result.append(new_line) 
+
+        self.source = '\n'.join(result)
 
     def remove_empty_lines(self):
         lines = self.source.split('\n')
