@@ -1,4 +1,3 @@
-TODO: method arguments
 TODO: return values from methods
 TODO: dont allow multiple statements in the same line
 TODO: arrays
@@ -19,3 +18,4 @@ DONE: preproccessor
 DONE: # in string breaks acts as the start of a comment
 DONE: mod
 DONE: variable scope
+DONE: method arguments

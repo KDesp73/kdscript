@@ -57,9 +57,13 @@ class Scope:
     def call_function(self, func, *args, arguments: list):
         self.enter_scope()
         index = 1
-        for arg in arguments:
-            self.set_variable(f"_{index}", arg)
+        for index in range(1, 10):
+            if arguments.__len__() < index:
+                self.set_variable(f"_{index}", (Variable.INT, 0))
+            else: 
+                self.set_variable(f"_{index}", arguments[index-1])
             index += 1
+
 
         try:
             func(*args)
