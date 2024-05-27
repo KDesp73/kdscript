@@ -1,4 +1,4 @@
-from logger import DEBU
+from logger import DEBU, INFO
 import parser
 from state import State
 from statements import Statement
@@ -73,14 +73,18 @@ def MathFactor(state: State, active: list):
         if id in KEYWORDS:
             Error(state, f"{id} is a reserved keyword").throw()
 
-        if id not in state.variables:
+        # if id not in state.variables:
+        #     Error(state, f"{id} is not defined").throw()
+
+        variable = state.scope.get_variable(id)
+        if  active[0] and variable[0] == Variable.NULL:
             Error(state, f"{id} is not defined").throw()
 
-        if state.variables[id][0] != Variable.INT and state.variables[id][0] != Variable.FLOAT:
+        if active[0] and variable[0] != Variable.INT and variable[0] != Variable.FLOAT:
             Error(state, f"Variable {id} is not a number").throw()
 
         if active[0]:
-            m = state.variables[id][1]
+            m = variable[1]
     
     return m
 
@@ -141,8 +145,9 @@ def String(state: State, active: list):
             s = input()
     else: 
         id = parser.take_next_alnum(state)
-        if id in state.variables and state.variables[id][0] == Variable.STRING:
-            s = state.variables[id][1]
+        variable = state.scope.get_variable(id)
+        if variable[0] == Variable.STRING:
+            s = str(variable[1])
         else: 
             Error(state, "not a string").throw()
     return s
@@ -158,7 +163,8 @@ def Expression(state: State, active: list):
     id = parser.take_next_alnum(state)
     state.position = store_pos
 
-    if parser.next(state) == '\"' or id == "str" or id == "input" or (id in state.variables and state.variables[id][0] == Variable.STRING):
+    variable = state.scope.get_variable(id)
+    if parser.next(state) == '\"' or id == "str" or id == "input" or (variable[0] == Variable.STRING):
         return (Variable.STRING, StringExpression(state, active))
     else: 
         var = MathExpression(state, active)

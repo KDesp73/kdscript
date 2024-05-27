@@ -41,6 +41,6 @@ class Preprocessor:
 
     def run(self):
         self.remove_comments()
-        self.remove_empty_lines()
+        # self.remove_empty_lines()
 
 
