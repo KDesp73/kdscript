@@ -73,9 +73,6 @@ def MathFactor(state: State, active: list):
         if id in KEYWORDS:
             Error(state, f"{id} is a reserved keyword").throw()
 
-        # if id not in state.variables:
-        #     Error(state, f"{id} is not defined").throw()
-
         variable = state.scope.get_variable(id)
         if  active[0] and variable[0] == Variable.NULL:
             Error(state, f"{id} is not defined").throw()

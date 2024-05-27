@@ -29,8 +29,6 @@ def run_assign(state: State, active: list):
         Error(state, f"{id} is a reserved keyword").throw()
 
     e = Expression(state, active)
-    # if active[0] or id not in state.variables:
-    #     state.variables[id] =  e
 
     if active[0]:
         state.scope.set_variable(id, e)
@@ -43,7 +41,6 @@ def run_func_def(state: State):
     if id == "": 
         Error(state, "missing funcroutine identifier").throw()
 
-    # state.variables[id] = (Variable.METHOD, state.position)
     state.scope.set_variable(id, (Variable.METHOD, state.position))
 
     # Skip block inactively
@@ -54,12 +51,8 @@ def run_call(state: State, active: list):
 
     id = parser.take_next_alnum(state)
 
-    # if id not in state.variables or state.variables[id][0] != Variable.METHOD: 
-    #     Error(state, "unknown function").throw()
-
     ret = state.position
     
-    # state.position = state.variables[id][1]
     method = state.scope.get_variable(id)
     if method[0] == Variable.NULL:
         Error(state, "unknown function").throw()
@@ -68,7 +61,6 @@ def run_call(state: State, active: list):
     
     if active[0]:
         state.scope.call_function(Block, state, active)
-        # Block(state, active)
     
     state.position = ret
 
