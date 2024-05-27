@@ -1,37 +1,49 @@
+from linked_list import LinkedList, Node
+from typing import Optional, Tuple
+
 from variable import Variable
 
-
 class Scope:
-    GLOBAL_SCOPE = 0
+    GLOBAL_SCOPE = '#global'
+
     def __init__(self):
-        self.scopes = [{}]
-        self.current_scope = Scope.GLOBAL_SCOPE
+        self.scopes = LinkedList()
+        self.scopes.insertAtBegin({})
+        self.current_scope: Optional[Node] = self.scopes.head
 
     def enter_scope(self):
-        self.scopes.append({})
-        self.current_scope = len(self.scopes) - 1
-
+        self.scopes.insertAtEnd({})
+        self.current_scope = self.scopes.head
+        while self.current_scope and self.current_scope.next:
+            self.current_scope = self.current_scope.next
+        
     def exit_scope(self):
-        if len(self.scopes) > 1:
-            self.scopes.pop()
-            self.current_scope = self.current_scope - 1 if self.current_scope > 0 else Scope.GLOBAL_SCOPE
+        if self.scopes.sizeOfLL() > 1:
+            self.scopes.remove_last_node()
+            self.current_scope = self.scopes.head
+            while self.current_scope and self.current_scope.next:
+                self.current_scope = self.current_scope.next
         else:
             raise Exception("Cannot exit global scope")
 
-    def set_variable(self, id, type_value: tuple):
-        self.scopes[-1][id] = type_value
+    def set_variable(self, id, type_value: Tuple):
+        if self.current_scope:
+            self.current_scope.data[id] = type_value
+        else:
+            raise Exception("No current scope available")
 
-    def set_global_variable(self, id, type_value: tuple):
-        self.scopes[Scope.GLOBAL_SCOPE][id] = type_value
-
-    def get_variable(self, name):
-        for scope in reversed(self.scopes):
-            if name in scope:
-                return scope[name]
-        
+    def get_variable(self, name: str):
+        current = self.current_scope
+        while current is not None:
+            if name in current.data:
+                return current.data[name]
+            current = current.next
+    
         return (Variable.NULL, 0)
 
     def call_function(self, func, *args):
         self.enter_scope()
-        func(*args)
-        self.exit_scope()
+        try:
+            func(*args)
+        finally:
+            self.exit_scope()

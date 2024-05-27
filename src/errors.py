@@ -6,7 +6,7 @@ def print_error(state: State, message, tag: str):
         s = state.source[:state.position].rfind("\n") + 1
         e = state.source.find("\n", state.position)
         line = line_from_position(state.source, state.position)
-        print(tag + ": " + message + " -> Line: " + str(line) + ": '" + state.source[s:state.position] + "_" + state.source[state.position:e] + "'\n")
+        print("\n", tag + ": " + message + " -> Line: " + str(line) + ": '" + state.source[s:state.position] + "_" + state.source[state.position:e] + "'\n")
 
 class Error:
     def __init__(self, state: State, message):

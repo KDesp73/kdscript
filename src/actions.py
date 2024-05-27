@@ -1,6 +1,6 @@
 import sys
 from keywords import KEYWORDS
-from state import State
+from state import State, debug
 import parser
 from errors import Error
 from variable import Variable
@@ -32,6 +32,7 @@ def run_assign(state: State, active: list):
 
     if active[0]:
         state.scope.set_variable(id, e)
+
 
 def run_func_def(state: State):
     from expressions import Block

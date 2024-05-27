@@ -1,15 +1,24 @@
 a = 1
 
 func test {
-    a = 1 + 2
+    func internal {
+        echo "Internal\n"
+    }
+
+    a = a + 1
     echo a, "\n"
     echo "Hello\n"
     
     # exit a - 2
 
     echo "World\n"
+
+
+    call internal
 }
 
 
 call test
 echo "a: ", a ,"\n"
+
+call internal
