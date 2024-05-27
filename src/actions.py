@@ -40,7 +40,7 @@ def run_func_def(state: State):
     id = parser.take_next_alnum(state)
     
     if id == "": 
-        Error(state, "missing funcroutine identifier").throw()
+        Error(state, "missing function identifier").throw()
 
     state.scope.set_variable(id, (Variable.METHOD, state.position))
 

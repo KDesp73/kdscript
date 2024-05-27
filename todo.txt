@@ -3,7 +3,6 @@ TODO: return values from methods
 TODO: dont allow multiple statements in the same line
 TODO: arrays
 TODO: differenciate return and esc
-TODO: variable scope
 TODO: do-while
 TODO: for
 TODO: boolean values
@@ -15,6 +14,8 @@ TODO: handle Ctrl+C
 TODO: documentation
 TODO: better readme
 TODO: C port
+TODO: else if
 DONE: preproccessor
 DONE: # in string breaks acts as the start of a comment
 DONE: mod
+DONE: variable scope
