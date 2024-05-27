@@ -13,3 +13,6 @@ func test {
 
 call test
 echo "a: ", a ,"\n"
+
+echo "Hello World", "\b\b\b\b"
+echo "\n"

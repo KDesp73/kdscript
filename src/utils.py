@@ -43,3 +43,12 @@ def print_enumarated(source: str):
         print(line)
         i += 1
     print()
+
+def enable_ansi_escape_codes():
+    import os
+    import platform
+    if platform.system() == 'Windows':
+        os.system('')
+
+    elif platform.system() == 'Linux':
+        pass  # Usually, no action is needed for Linux

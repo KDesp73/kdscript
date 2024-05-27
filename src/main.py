@@ -1,8 +1,11 @@
 from logger import ERRO, INFO
+import utils
 from preprocessor import Preprocessor
 from state import State
 from expressions import Program
 import argparse
+
+from utils import enable_ansi_escape_codes
 
 def main():
     args_parser = argparse.ArgumentParser(
@@ -28,6 +31,7 @@ def main():
     preprocessor = Preprocessor(file)
     preprocessor.run()
         
+    utils.enable_ansi_escape_codes()
     Program(State(file, preprocessor.source))
 
 

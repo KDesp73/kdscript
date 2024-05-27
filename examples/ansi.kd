@@ -1,0 +1,16 @@
+normal = "\033[0m"
+red = "\033[91m"
+green = "\033[92m"
+blue = "\033[94m"
+
+func print_red {
+    echo red, _1, normal, "\n"
+}
+func print_blue {
+    echo blue, _1, normal, "\n"
+}
+func print_green {
+    echo green, _1, normal, "\n"
+}
+
+call print_red <- "Hello World"

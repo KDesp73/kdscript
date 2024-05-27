@@ -72,3 +72,28 @@ def take_next_alnum(state: State):
         
     return alnum
 
+def make_escape_character(state: State, c) -> str:
+    match c:
+        case 'n':
+            return '\n'
+        case 't':
+            return '\t'
+        case "'":
+            return '\''
+        case '"':
+            return '\"'
+        case 'r':
+            return '\r'
+        case 'b':
+            return '\b'
+        case 'f':
+            return '\f'
+        case 'a':
+            return '\a'
+        case 'v':
+            return '\v'
+        case '0':
+            return '\0'
+        case _:
+            Error(state, "unrecognized escape character").throw()
+            return ""

@@ -7,6 +7,7 @@ from errors import Error, RuntimeError
 from variable import Variable
 from keywords import KEYWORDS
 
+
 def BooleanFactor(state: State, active: list):
     inv = parser.take_next(state, '!')
     e = Expression(state, active)
@@ -131,8 +132,8 @@ def String(state: State, active: list):
         while not parser.take_string(state, "\""):
             if parser.inspect(state) == '\0': 
                 Error(state, "unexpected EOF").throw()
-            if parser.take_string(state, "\\n"): 
-                s += '\n'
+            if parser.take_string(state, "\\"): 
+                s += parser.make_escape_character(state, parser.take(state))
             else: 
                 s += parser.take(state)
     elif parser.take_string(state, "str("):

@@ -11,4 +11,12 @@ func method {
 }
 
 
-call method <- 1, 2.2, "Hello world", 1, 2
+# call method <- 1, 2.2, "Hello world", 1, 2
+
+func test {
+    echo _1 - 1, "\n"
+}
+
+call test <- 11
+call test <- 11
+call test <- 12

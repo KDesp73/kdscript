@@ -1,0 +1,15 @@
+func delay {
+    i = _1
+    while i > 0 {
+        i = i - 1
+    }
+}
+
+func siren {
+    while 1 {
+        echo "\a."
+        call delay <- 100
+    } 
+}
+
+call siren
