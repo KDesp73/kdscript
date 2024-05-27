@@ -3,7 +3,7 @@ from keywords import KEYWORDS
 from state import State, debug
 import parser
 from errors import Error
-from logger import DEBU
+from logger import DEBU, INFO
 from variable import Variable
 
 def run_exit(state: State, active: list):
@@ -47,6 +47,9 @@ def run_func_def(state: State):
     if id == "": 
         Error(state, "missing function identifier").throw()
 
+    if id in KEYWORDS:
+        Error(state, f"{id} is a reserved keyword").throw()
+
     if state.scope.scopes.head != state.scope.current_scope:
         Error(state, "cannot define a function inside another function").throw()
 
@@ -57,9 +60,18 @@ def run_func_def(state: State):
     Block(state, [False])
 
 def run_call(state: State, active: list):
-    from expressions import Block
+    from expressions import Block, Expression
 
     id = parser.take_next_alnum(state)
+
+    args = []
+    parser.next(state)
+    if parser.take_string(state, "<-"):
+        while True:
+            e = Expression(state, active)
+            args.append(e)   
+            if not parser.take_next(state, ','): break
+
 
     ret = state.position
     
@@ -70,7 +82,7 @@ def run_call(state: State, active: list):
     state.position = method[1]
     
     if active[0]:
-        state.scope.call_function(Block, state, active)
+        state.scope.call_function(Block, state, active, arguments=args)
     
     state.position = ret
 

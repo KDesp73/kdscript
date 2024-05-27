@@ -1,0 +1,15 @@
+func method {
+    echo _1, "\n"
+    echo _2, "\n"
+    echo _3, "\n"
+    echo _4, "\n"
+    echo _5, "\n"
+    echo _6, "\n"
+    echo _7, "\n"
+    echo _8, "\n"
+    echo _9, "\n"
+    echo _10, "\n"
+}
+
+
+call method <- 1, 2.2, "Hello world", 1, 2, 3, 4, 5, 0.1, "a"

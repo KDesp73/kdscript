@@ -54,8 +54,13 @@ class Scope:
     
         return (Variable.NULL, 0)
 
-    def call_function(self, func, *args):
+    def call_function(self, func, *args, arguments: list):
         self.enter_scope()
+        index = 1
+        for arg in arguments:
+            self.set_variable(f"_{index}", arg)
+            index += 1
+
         try:
             func(*args)
         finally:

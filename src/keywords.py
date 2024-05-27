@@ -12,4 +12,4 @@ class Keyword:
     EXIT = "exit"
 
 
-KEYWORDS = [attr for attr in dir(Keyword) if not callable(getattr(Keyword, attr)) and not attr.startswith("__")]
+KEYWORDS = [getattr(Keyword, attr) for attr in dir(Keyword) if not callable(getattr(Keyword, attr)) and not attr.startswith("__")]

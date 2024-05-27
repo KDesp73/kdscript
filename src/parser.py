@@ -65,7 +65,8 @@ def take_next_alnum(state: State):
     """
 
     alnum = ""
-    if is_alpha(next(state)):
+    nxt = next(state)
+    if is_alpha(nxt) or nxt == '_':
         while is_alnum(inspect(state)): 
             alnum += take(state)
         

@@ -5,8 +5,6 @@
 - echo "Hello World"
 - exit `exit-code` (int)
 
-- run "path/to/script" -- Run external kd script (maybe handled by the preprocessor)
-
 - input() -- Should change
 - val(expression) -- Should change
 - str(expression) -- Should change
@@ -67,9 +65,23 @@ a = call name <- 1.3
 
 ## Preprocessor
 
+! indicates preprocessor tag
+
 ```
-#import "path/to/file" -- Include methods from file
-#assign A 2
-#run "path/to/file" -- Run file as script
+!import "path/to/file" -- Include methods from file
+!assign A 2
+!run "path/to/file" -- Run file as script
+!export
 ```
 
+## Comments
+
+```
+# Single line comment
+
+##
+Multi-
+line
+Comment
+##
+```

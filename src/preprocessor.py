@@ -1,6 +1,11 @@
 from utils import read_file
 
 class Preprocessor:
+    COMMENT = '#'
+    MULTILINE_COMMENT_START = '-#'
+    MULTILINE_COMMENT_END = '#-'
+    TAG_INDICATOR = '!'
+
     def __init__(self, file):
         self.file = file
         self.source = read_file(file) 
@@ -16,7 +21,7 @@ class Preprocessor:
                 if line[i] == '"' and (i == 0 or line[i - 1] != '\\'):
                     in_string = not in_string
                 
-                if not in_string and line[i] == '#':
+                if not in_string and line[i] == Preprocessor.COMMENT:
                     break
                 else:
                     new_line += line[i]
