@@ -8,12 +8,12 @@ func scope_test {
     b = 2.3
 
     echo "scope_test b: ", b, "\n"
-    func dksldas{}
 }
 
 func another {
     t = 32.19
     s = "Hello"
+    echo "t: ", t, " s: ", s, "\n"
 }
 
 call scope_test

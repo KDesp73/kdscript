@@ -1,10 +1,6 @@
 a = 1
 
 func test {
-    func internal {
-        echo "Internal\n"
-    }
-
     a = a + 1
     echo a, "\n"
     echo "Hello\n"
@@ -12,13 +8,8 @@ func test {
     # exit a - 2
 
     echo "World\n"
-
-
-    call internal
 }
 
 
 call test
 echo "a: ", a ,"\n"
-
-call internal

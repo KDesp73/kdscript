@@ -34,3 +34,12 @@ def line_from_position(code: str, position: int):
 
 def count_digits(number):
     return len(str(number).replace('-', '').replace('.', '').replace('e', '').replace('+', ''))
+
+def print_enumarated(source: str):
+    i = 1
+    for line in source.split('\n'):
+        print(i, end="")
+        print(" " * (5-count_digits(i)) , end="")
+        print(line)
+        i += 1
+    print()

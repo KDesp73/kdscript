@@ -3,6 +3,7 @@ from keywords import KEYWORDS
 from state import State, debug
 import parser
 from errors import Error
+from logger import DEBU
 from variable import Variable
 
 def run_exit(state: State, active: list):
@@ -31,7 +32,10 @@ def run_assign(state: State, active: list):
     e = Expression(state, active)
 
     if active[0]:
-        state.scope.set_variable(id, e)
+        if state.scope.get_global_variable(id)[0] != Variable.NULL:
+            state.scope.set_global_variable(id, e)
+        else:
+            state.scope.set_variable(id, e)
         # debug(state)
 
 
@@ -59,7 +63,7 @@ def run_call(state: State, active: list):
 
     ret = state.position
     
-    method = state.scope.get_variable(id)
+    method = state.scope.get_global_variable(id) if state.scope.get_global_variable(id)[0] != Variable.NULL else state.scope.get_variable(id)
     if method[0] == Variable.NULL:
         Error(state, "unknown function").throw()
 

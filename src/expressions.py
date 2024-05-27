@@ -75,7 +75,7 @@ def MathFactor(state: State, active: list):
         if id in KEYWORDS:
             Error(state, f"{id} is a reserved keyword").throw()
 
-        variable = state.scope.get_variable(id)
+        variable = state.scope.get_global_variable(id) if state.scope.get_global_variable(id)[0] != Variable.NULL else state.scope.get_variable(id)
         if  active[0] and variable[0] == Variable.NULL:
             Error(state, f"{id} is not defined").throw()
 
@@ -144,7 +144,7 @@ def String(state: State, active: list):
             s = input()
     else: 
         id = parser.take_next_alnum(state)
-        variable = state.scope.get_variable(id)
+        variable = state.scope.get_global_variable(id) if state.scope.get_global_variable(id)[0] != Variable.NULL else state.scope.get_variable(id)
         if variable[0] == Variable.STRING:
             s = str(variable[1])
         else: 
@@ -162,7 +162,7 @@ def Expression(state: State, active: list):
     id = parser.take_next_alnum(state)
     state.position = store_pos
 
-    variable = state.scope.get_variable(id)
+    variable = state.scope.get_global_variable(id) if state.scope.get_global_variable(id)[0] != Variable.NULL else state.scope.get_variable(id)
     if parser.next(state) == '\"' or id == "str" or id == "input" or (variable[0] == Variable.STRING):
         return (Variable.STRING, StringExpression(state, active))
     else: 

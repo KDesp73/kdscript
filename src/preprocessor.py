@@ -1,20 +1,9 @@
-import re
-from utils import count_digits, read_file
+from utils import read_file
 
 class Preprocessor:
     def __init__(self, file):
         self.file = file
-        self.source = read_file(file)
-
-    def print_enumarated(self):
-        i = 1
-        for line in self.source.split('\n'):
-            print(i, end="")
-            print(" " * (5-count_digits(i)) , end="")
-            print(line)
-            i += 1
-        print()
-    
+        self.source = read_file(file) 
 
     def remove_comments(self):
         in_string = False
