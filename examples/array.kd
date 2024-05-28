@@ -1,0 +1,15 @@
+a = [1, 2, "4", 5, 2.1]
+
+b = a[4] + 1
+
+func print_var {
+    echo _2, ": ", _1, "\n"
+}
+
+call print_var <- b, "b"
+
+i = 0
+while i < 5 {
+    call print_var <- a[i], "a["+str(i)+"]" 
+    i = i + 1
+}

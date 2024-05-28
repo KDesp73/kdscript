@@ -10,12 +10,13 @@ def run_exit(state: State, active: list):
     from expressions import Expression
 
     value = Expression(state, active)[1]
-    
+
     if active[0] and not isinstance(value, int):
         Error(state, "expression is not an integer").throw()
 
     if active[0]:
-        sys.exit(int(value))
+        if not isinstance(value, list):
+            sys.exit(int(value))
 
 
 def run_assign(state: State, active: list):
@@ -36,7 +37,6 @@ def run_assign(state: State, active: list):
             state.scope.set_global_variable(id, e)
         else:
             state.scope.set_variable(id, e)
-        # debug(state)
 
 
 def run_func_def(state: State):

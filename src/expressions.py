@@ -4,14 +4,14 @@ from state import State, debug
 from statements import Statement
 from utils import *
 from errors import Error, RuntimeError
-from variable import Variable
+from variable import Variable, get_type
 from keywords import KEYWORDS
 
 
 def BooleanFactor(state: State, active: list):
     inv = parser.take_next(state, '!')
     e = Expression(state, active)
-    b = int(e[1])
+    b = int(e[1]) if not isinstance(e[1], list) else e[1].__len__() != 0
 
     parser.next(state)
     
@@ -22,6 +22,9 @@ def BooleanFactor(state: State, active: list):
         elif parser.take_string(state, "<"): b = (b < MathExpression(state, active))
         elif parser.take_string(state, ">="): b = (b >= MathExpression(state, active))
         elif parser.take_string(state, ">"): b = (b > MathExpression(state, active))
+    elif e[0] == Variable.ARRAY:
+        if isinstance(e[1], list):
+            b = e[1].__len__() != 0
     else:
         if parser.take_string(state, "=="): b = (b == StringExpression(state, active))
         elif parser.take_string(state, "!="): b = (b != StringExpression(state, active))
@@ -72,7 +75,7 @@ def MathFactor(state: State, active: list):
         if not parser.take_next(state, ')'): Error(state, "missing ')'").throw()
     else: # Variables
         id = parser.take_next_alnum(state)
-
+        
         if id in KEYWORDS:
             Error(state, f"{id} is a reserved keyword").throw()
 
@@ -80,11 +83,15 @@ def MathFactor(state: State, active: list):
         if  active[0] and variable[0] == Variable.NULL:
             Error(state, f"{id} is not defined").throw()
 
+        if active[0] and (id != '' and parser.take_string(state, f"{id}[")):
+            m = ArrayItem(state, active, variable)
+        else:
+            m = variable[1]
+
         if active[0] and variable[0] != Variable.INT and variable[0] != Variable.FLOAT:
             Error(state, f"Variable {id} is not a number").throw()
-
-        if active[0]:
-            m = variable[1]
+        
+        DEBU(m)
     
     return m
 
@@ -124,6 +131,8 @@ def MathExpression(state: State, active: list):
             m = m + m2
         else:
             m = m - m2
+
+    DEBU(f"m: {m}")
     return m
 
 def String(state: State, active: list):
@@ -158,6 +167,47 @@ def StringExpression(state: State, active: list):
         s += String(state, active)
     return s
 
+def Array(state: State, active: list):
+    items = []
+    parser.next(state)
+    if parser.take_string(state, "["):
+        while True:
+            e = Expression(state, active)
+            items.append(e[1])   
+            if not parser.take_next(state, ','):
+                parser.advance(state)
+                break
+        parser.advance(state)
+    else: 
+        id = parser.take_next_alnum(state)
+        variable = state.scope.get_global_variable(id) if state.scope.get_global_variable(id)[0] != Variable.NULL else state.scope.get_variable(id)
+        if variable[0] == Variable.ARRAY:
+            items = variable[1]
+        else: 
+            Error(state, "not a string").throw()
+
+    return items
+
+def ArrayItem(state: State, active: list, variable):
+    index = 0
+    e = Expression(state, active)
+
+    if active[0] and e[0] != Variable.INT or not isinstance(e[1], int):
+        Error(state, "expression not an integer").throw()
+
+    index = e[1]
+
+    if active[0] and index >= variable[1].__len__(): 
+        RuntimeError(state, f"index {index} out of bounds").throw()
+
+    if not parser.take_next(state, "]"):
+        Error(state, "expected ']'").throw()
+    
+    return (variable[1][index] if active[0] and isinstance(variable[1], list) else 0)
+
+def ArrayExpression(state: State, active: list):
+    return Array(state, active)
+
 def Expression(state: State, active: list):
     store_pos = state.position
     id = parser.take_next_alnum(state)
@@ -166,7 +216,12 @@ def Expression(state: State, active: list):
     variable = state.scope.get_global_variable(id) if state.scope.get_global_variable(id)[0] != Variable.NULL else state.scope.get_variable(id)
     if parser.next(state) == '\"' or id == "str" or id == "input" or (variable[0] == Variable.STRING):
         return (Variable.STRING, StringExpression(state, active))
-    else: 
+    elif id != '' and parser.take_string(state, f"{id}["):
+        item = ArrayItem(state, active, variable)
+        return (get_type(item), item)
+    elif parser.next(state) == '[' or variable[0] == Variable.ARRAY: 
+        return (Variable.ARRAY, ArrayExpression(state, active))
+    else:
         var = MathExpression(state, active)
         if is_float(var): return (Variable.FLOAT, var)
         else: return (Variable.INT, var)

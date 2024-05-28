@@ -16,3 +16,9 @@ class Variable:
         self.id = id
         self.value = value
 
+def get_type(item):
+    if isinstance(item, int): return Variable.INT
+    elif isinstance(item, float): return Variable.FLOAT
+    elif isinstance(item, str): return Variable.STRING
+    elif isinstance(item, list): return Variable.ARRAY
+    else: return Variable.NULL
