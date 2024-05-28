@@ -7,6 +7,9 @@ func error {
     exit _2
 }
 
+####################################
+
 call println <- "Hello" + " World"
-call println
 call error <- "Error message", 1
+
+####################################

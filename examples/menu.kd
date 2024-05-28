@@ -13,7 +13,7 @@ func about {
     echo "About selected\n\n"
 }
 
-func exit {
+func exitProgram {
     echo "Exiting...\n\n"
 }
 
@@ -44,7 +44,7 @@ func menu {
     }
 
     if choice == 4 {
-        call exit 
+        call exitProgram
         exit 0
     }
     

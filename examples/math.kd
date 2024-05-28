@@ -24,5 +24,6 @@ func float_example {
     echo "a: ", a, "\n"
 }
 
+call divisionByZero
 # call mod_example
-call float_example
+# call float_example

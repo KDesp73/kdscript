@@ -19,6 +19,14 @@ if condition {
 } else {
 
 }
+
+if condition {
+
+} else if condition {
+
+} else {
+
+}
 ```
 
 - while
@@ -63,15 +71,21 @@ call name <- x, 2, 3
 a = call name <- 1.3
 ```
 
-## Preprocessor
-
-! indicates preprocessor tag
+## Casting
 
 ```
-!import "path/to/file" -- Include methods from file
-!assign A 2
-!run "path/to/file" -- Run file as script
-!export
+a = 5 as float
+```
+
+## Preprocessor
+
+@ indicates preprocessor tag
+
+```
+@import "path/to/file" -- Include methods from file
+@alias A 2
+@run "path/to/file" -- Run file as script
+@export a
 ```
 
 ## Comments
@@ -83,5 +97,5 @@ a = call name <- 1.3
 Multi-
 line
 Comment
-##
+#-
 ```
