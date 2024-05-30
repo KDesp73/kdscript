@@ -5,17 +5,17 @@ TODO: do-while
 TODO: for
 TODO: boolean values
 TODO: preprocessor tags (import, assign)
-TODO: run keyword
-TODO: type keywords for casting
 TODO: casting
 TODO: documentation
 TODO: better readme
 TODO: C port
-TODO: else if
 TODO: differenciate return, break, esc
+TODO: change input, val, str methods
 DONE: preproccessor
 DONE: # in string breaks acts as the start of a comment
 DONE: mod
 DONE: variable scope
 DONE: method arguments
 DONE: handle Ctrl+C
+DONE: else if
+DONE: type keywords for casting

@@ -10,4 +10,5 @@ def Statement(state: State, active: list):
     elif parser.take_string(state, Keyword.CALL): run_call(state, active)
     elif parser.take_string(state, Keyword.FUNC): run_func_def(state)
     elif parser.take_string(state, Keyword.EXIT): run_exit(state, active)
+    elif parser.take_string(state, Keyword.RETURN): run_return(state, active)
     else: run_assign(state, active)

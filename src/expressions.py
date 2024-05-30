@@ -1,16 +1,20 @@
+from actions import run_call
 from logger import DEBU, INFO
 import parser
 from state import State, debug
 from statements import Statement
 from utils import *
-from errors import Error, RuntimeError
+from errors import Error, RuntimeError, print_error
 from variable import Variable
-from keywords import KEYWORDS
+from keywords import KEYWORDS, Keyword
 
 
 def BooleanFactor(state: State, active: list):
     inv = parser.take_next(state, '!')
     e = Expression(state, active)
+    if e == None: 
+        return False
+
     b = int(e[1])
 
     parser.next(state)
@@ -158,6 +162,9 @@ def StringExpression(state: State, active: list):
         s += String(state, active)
     return s
 
+def FunctionExpression(state: State, active: list):
+    return run_call(state, active)
+
 def Expression(state: State, active: list):
     store_pos = state.position
     id = parser.take_next_alnum(state)
@@ -166,6 +173,8 @@ def Expression(state: State, active: list):
     variable = state.scope.get_global_variable(id) if state.scope.get_global_variable(id)[0] != Variable.NULL else state.scope.get_variable(id)
     if parser.next(state) == '\"' or id == "str" or id == "input" or (variable[0] == Variable.STRING):
         return (Variable.STRING, StringExpression(state, active))
+    elif parser.take_string(state, Keyword.CALL):
+        return FunctionExpression(state, active)
     else: 
         var = MathExpression(state, active)
         if is_float(var): return (Variable.FLOAT, var)

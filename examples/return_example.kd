@@ -1,0 +1,7 @@
+func add_one {
+    return _1 + 1
+}
+
+a = call test <- 3
+
+echo "a: ", a, "\n"

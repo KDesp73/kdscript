@@ -21,11 +21,9 @@ kdscript filename.kd
 ```
 # Method to print a star pyramid of user defined height
 func printPyramid {
-    echo "Enter height: "
-    height = val(input())
     i = 1
-    while i <= height {
-        spaces = height - i
+    while i <= _1 {
+        spaces = _1 - i
         while spaces > 0 {
             echo " "
             spaces = spaces - 1
@@ -42,7 +40,10 @@ func printPyramid {
     }
 }
 
-call printPyramid
+echo "Enter height: "
+height = val(input())
+
+call printPyramid <- height
 ```
 
 ## LICENSE

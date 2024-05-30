@@ -9,6 +9,7 @@ class Scope:
         self.scopes = LinkedList()
         self.scopes.insertAtBegin({})
         self.current_scope: Optional[Node] = self.scopes.head
+        self.return_value = None
 
     def enter_scope(self):
         self.scopes.insertAtEnd({})
@@ -53,6 +54,15 @@ class Scope:
                 return current.data[name]
     
         return (Variable.NULL, 0)
+
+    def set_return_value(self, value):
+        self.return_value = value
+
+    def get_return_value(self):
+        return self.return_value
+
+    def clear_return_value(self):
+        self.return_value = None
 
     def call_function(self, func, *args, arguments: list):
         self.enter_scope()

@@ -1,15 +1,20 @@
 import sys
-from keywords import KEYWORDS
+from keywords import KEYWORDS, Keyword
 from state import State, debug
 import parser
 from errors import Error
-from logger import DEBU, INFO
+from logger import DEBU, INFO, WARN
 from variable import Variable
 
 def run_exit(state: State, active: list):
     from expressions import Expression
 
-    value = Expression(state, active)[1]
+    e = Expression(state, active)
+    if e == None:
+        Error(state, "no expression found").throw()
+        return
+
+    value = e[1]
     
     if active[0] and not isinstance(value, int):
         Error(state, "expression is not an integer").throw()
@@ -31,12 +36,11 @@ def run_assign(state: State, active: list):
 
     e = Expression(state, active)
 
-    if active[0]:
+    if active[0] and e != None:
         if state.scope.get_global_variable(id)[0] != Variable.NULL:
             state.scope.set_global_variable(id, e)
         else:
             state.scope.set_variable(id, e)
-        # debug(state)
 
 
 def run_func_def(state: State):
@@ -54,7 +58,6 @@ def run_func_def(state: State):
         Error(state, "cannot define a function inside another function").throw()
 
     state.scope.set_variable(id, (Variable.METHOD, state.position))
-    # debug(state)
 
     # Skip block inactively
     Block(state, [False])
@@ -81,10 +84,29 @@ def run_call(state: State, active: list):
 
     state.position = method[1]
     
+    ret_value = None
     if active[0]:
-        state.scope.call_function(Block, state, active, arguments=args)
-    
+        state.scope.enter_scope()
+        for i, arg in enumerate(args):
+            state.scope.set_variable(f"_{i + 1}", arg)
+
+        ret_value = None
+        try:
+            Block(state, active)
+            ret_value = state.scope.get_return_value()
+        finally:
+            state.scope.exit_scope()
+
     state.position = ret
+    return ret_value 
+
+def run_return(state: State, active: list):
+    from expressions import Expression
+
+    e = Expression(state, active)
+    if active[0] and e != None:
+        state.scope.set_return_value(e[1])
+        active[0] = False
 
 def run_if_else(state: State, active: list):
     def all_false(booleans: list):
@@ -138,7 +160,8 @@ def run_echo(state: State, active: list):
 
     while True:
         e = Expression(state, active)
-        if active[0]: print(e[1], end="")
+        if e == None: Error(state, "no expression found").throw(); return
+        if active[0]: print(e[1], end="") 
         if not parser.take_next(state, ','): return
 
 def run_break(active: list):

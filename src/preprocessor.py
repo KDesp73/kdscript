@@ -4,7 +4,7 @@ class Preprocessor:
     COMMENT = '#'
     MULTILINE_COMMENT_START = '-#'
     MULTILINE_COMMENT_END = '#-'
-    TAG_INDICATOR = '!'
+    TAG_INDICATOR = '@'
 
     def __init__(self, file):
         self.file = file
