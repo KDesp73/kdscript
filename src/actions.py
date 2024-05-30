@@ -87,9 +87,18 @@ def run_call(state: State, active: list):
     state.position = ret
 
 def run_if_else(state: State, active: list):
+    def all_false(booleans: list):
+        for bool in booleans:
+            if bool:
+                return False
+        return True
+
     from expressions import BooleanExpression, Block
 
     b = BooleanExpression(state, active)
+    booleans = []
+    booleans.append(b)
+
     if active[0] and b: 
         Block(state, active)
     else:
@@ -97,11 +106,20 @@ def run_if_else(state: State, active: list):
     
     parser.next(state)
     
-    if parser.take_string(state, "else"):
-        if active[0] and not b:
+    while parser.take_string(state, "else"):
+        if parser.take_string(state, "if"):
+            b_elif = BooleanExpression(state, active)
+            booleans.append(b_elif)
+            if active[0] and b_elif:
+                Block(state, active)
+            else:
+                Block(state, [False])
+
+        if active[0] and all_false(booleans):
             Block(state, active)
         else:
             Block(state, [False])
+
 
 def run_while(state: State, active: list):
     from expressions import BooleanExpression, Block
