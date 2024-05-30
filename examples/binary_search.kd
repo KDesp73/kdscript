@@ -3,8 +3,13 @@ guess = 0
 tries = 0
 
 while guess != number {
-    echo "Guess: "
+    echo "Guess [0,100]: "
     guess = val(input())
+    while guess < 0 | guess > 100 {
+        echo "Guess [0,100]: "
+        guess = val(input())
+    }
+
     if guess < number {
         echo "Your guess is less than the number\n"
     } 
@@ -16,4 +21,10 @@ while guess != number {
     tries = tries + 1
 }
 
-echo "You found the number in ", tries, " tries!\n"
+echo "You found the number in ", tries
+if tries > 1 {
+    echo " tries"    
+} else {
+    echo " try"
+}
+echo "\n"

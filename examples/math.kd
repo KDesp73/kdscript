@@ -3,7 +3,6 @@ func divisionByZero {
     while a >= 0 {
         b = 12 / a
         echo 12, "/", a, "=", b, "\n"
-
         a = a - 1
     }
 }
@@ -16,5 +15,15 @@ func mod_example {
     }
 }
 
-#call mod_example
+func float_example {
+    b = 4.1 + 2.99
+    echo "b: ", b, "\n"
+    a = 2.91
+    echo "a: ", a, "\n"
+    a = a + 0.1
+    echo "a: ", a, "\n"
+}
+
 call divisionByZero
+# call mod_example
+# call float_example

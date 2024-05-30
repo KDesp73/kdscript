@@ -1,0 +1,15 @@
+func println {
+    echo _1, "\n"
+}
+
+func error {
+    call println <- _1
+    exit _2
+}
+
+####################################
+
+call println <- "Hello" + " World"
+call error <- "Error message", 1
+
+####################################

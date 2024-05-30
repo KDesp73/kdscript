@@ -1,11 +1,12 @@
-from logger import DEBU
+from logger import DEBU, INFO
 import parser
-from state import State
+from state import State, debug
 from statements import Statement
 from utils import *
 from errors import Error, RuntimeError
 from variable import Variable
 from keywords import KEYWORDS
+
 
 def BooleanFactor(state: State, active: list):
     inv = parser.take_next(state, '!')
@@ -41,7 +42,7 @@ def BooleanExpression(state: State, active: list):
 def MathFactor(state: State, active: list):
     m = 0
     m_dec = 0
-    is_dec = False
+    is_floating = False
     if parser.take_next(state, '('): # complex expression
         m = MathExpression(state, active)
         if not parser.take_next(state, ')'): Error(state, "missing ')'").throw()
@@ -50,14 +51,16 @@ def MathFactor(state: State, active: list):
             c = parser.take(state)
             
             if c == '.': 
-                is_dec = True
+                is_floating = True
                 continue
-            if not is_dec:
+
+            if not is_floating:
                 m = 10 * m + ord(c) - ord('0') 
             else:
                 m_dec = 10 * m_dec + ord(c) - ord('0') 
-        if is_dec:
-            m = m + ( m_dec/(len(str(m_dec)*10)) )
+        if is_floating:
+            divisor = 10 ** len(str(m_dec))
+            m = m + m_dec / divisor
     elif parser.take_string(state, "val("): # string to num
         s = String(state, active)
         if active[0]:
@@ -73,14 +76,15 @@ def MathFactor(state: State, active: list):
         if id in KEYWORDS:
             Error(state, f"{id} is a reserved keyword").throw()
 
-        if id not in state.variables:
+        variable = state.scope.get_global_variable(id) if state.scope.get_global_variable(id)[0] != Variable.NULL else state.scope.get_variable(id)
+        if  active[0] and variable[0] == Variable.NULL:
             Error(state, f"{id} is not defined").throw()
 
-        if state.variables[id][0] != Variable.INT and state.variables[id][0] != Variable.FLOAT:
+        if active[0] and variable[0] != Variable.INT and variable[0] != Variable.FLOAT:
             Error(state, f"Variable {id} is not a number").throw()
 
         if active[0]:
-            m = state.variables[id][1]
+            m = variable[1]
     
     return m
 
@@ -128,8 +132,8 @@ def String(state: State, active: list):
         while not parser.take_string(state, "\""):
             if parser.inspect(state) == '\0': 
                 Error(state, "unexpected EOF").throw()
-            if parser.take_string(state, "\\n"): 
-                s += '\n'
+            if parser.take_string(state, "\\"): 
+                s += parser.make_escape_character(state, parser.take(state))
             else: 
                 s += parser.take(state)
     elif parser.take_string(state, "str("):
@@ -141,8 +145,9 @@ def String(state: State, active: list):
             s = input()
     else: 
         id = parser.take_next_alnum(state)
-        if id in state.variables and state.variables[id][0] == Variable.STRING:
-            s = state.variables[id][1]
+        variable = state.scope.get_global_variable(id) if state.scope.get_global_variable(id)[0] != Variable.NULL else state.scope.get_variable(id)
+        if variable[0] == Variable.STRING:
+            s = str(variable[1])
         else: 
             Error(state, "not a string").throw()
     return s
@@ -158,7 +163,8 @@ def Expression(state: State, active: list):
     id = parser.take_next_alnum(state)
     state.position = store_pos
 
-    if parser.next(state) == '\"' or id == "str" or id == "input" or (id in state.variables and state.variables[id][0] == Variable.STRING):
+    variable = state.scope.get_global_variable(id) if state.scope.get_global_variable(id)[0] != Variable.NULL else state.scope.get_variable(id)
+    if parser.next(state) == '\"' or id == "str" or id == "input" or (variable[0] == Variable.STRING):
         return (Variable.STRING, StringExpression(state, active))
     else: 
         var = MathExpression(state, active)

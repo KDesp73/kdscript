@@ -1,0 +1,11 @@
+a = 5
+
+if a == 2 {
+    echo "a = 2\n"
+} else if a == 3 {
+    echo "a = 3\n"
+} else if a == 4 {
+    echo "a = 4\n"
+}else {
+    echo "a is not 2 or 3 or 4\n"
+}

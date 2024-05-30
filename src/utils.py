@@ -30,3 +30,25 @@ def is_int(s: str):
 
 def line_from_position(code: str, position: int):
     return code[:position].count("\n") + 1
+
+
+def count_digits(number):
+    return len(str(number).replace('-', '').replace('.', '').replace('e', '').replace('+', ''))
+
+def print_enumarated(source: str):
+    i = 1
+    for line in source.split('\n'):
+        print(i, end="")
+        print(" " * (5-count_digits(i)) , end="")
+        print(line)
+        i += 1
+    print()
+
+def enable_ansi_escape_codes():
+    import os
+    import platform
+    if platform.system() == 'Windows':
+        os.system('')
+
+    elif platform.system() == 'Linux':
+        pass  # Usually, no action is needed for Linux

@@ -1,0 +1,21 @@
+a = 3
+echo "global a: ", a, "\n"
+
+func scope_test {
+    a = 1
+    echo "internal a: ", a, "\n"
+    
+    b = 2.3
+
+    echo "scope_test b: ", b, "\n"
+}
+
+func another {
+    t = 32.19
+    s = "Hello"
+    echo "t: ", t, " s: ", s, "\n"
+}
+
+call scope_test
+call another
+

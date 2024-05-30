@@ -1,19 +1,23 @@
+# A Menu program that runs in an infinite recursive loop
+# until Exit is selected
+
 func home {
-    echo "Home selected\n"
+    echo "Home selected\n\n"
 }
 
 func settings {
-    echo "Settings selected\n"
+    echo "Settings selected\n\n"
 }
 
 func about {
-    echo "About selected\n"
+    echo "About selected\n\n"
 }
 
-func exit {
-    echo "Exiting...\n"
+func exitProgram {
+    echo "Exiting...\n\n"
 }
 
+choice = 0
 func menu {
     echo "1. Home\n"
     echo "2. Settings\n"
@@ -27,12 +31,6 @@ func menu {
         choice = val(input())
     }
 
-    if choice == 4 {
-        call exit 
-        esc
-    }
-
-
     if choice == 1 {
         call home
     }
@@ -43,6 +41,11 @@ func menu {
 
     if choice == 3 {
         call about
+    }
+
+    if choice == 4 {
+        call exitProgram
+        exit 0
     }
     
     call menu

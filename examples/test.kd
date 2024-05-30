@@ -1,5 +1,7 @@
+a = 5
+
 func test {
-    a = 1 + 2
+    a = a + 1
     echo a, "\n"
     echo "Hello\n"
     
@@ -8,4 +10,12 @@ func test {
     echo "World\n"
 }
 
+
 call test
+echo "a: ", a ,"\n"
+
+echo "\a"
+
+echo "Hello World", "\b\b\b\b"
+echo "\n"
+

@@ -1,11 +1,9 @@
+from logger import DEBU
+from scope import Scope
 from utils import read_file
 
-class State:
-    variables = {}
-    # TODO: updated these accordingly
-    # line = 1
-    # column = 1
 
+class State:
     def __init__(self, file, source = "", position = 0):
         self.file = file
         self.position = position
@@ -14,3 +12,15 @@ class State:
         else:
             self.source = source
 
+        self.variables = {}
+        self.scope = Scope()
+
+        # TODO: updated these accordingly
+        self.line = 1
+        # self.column = 1
+
+
+def debug(state: State):
+    DEBU(f"Line: {state.line}")
+    state.scope.scopes.printLL()
+    input()

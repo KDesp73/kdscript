@@ -1,36 +1,35 @@
-import re
 from utils import read_file
 
 class Preprocessor:
+    COMMENT = '#'
+    MULTILINE_COMMENT_START = '-#'
+    MULTILINE_COMMENT_END = '#-'
+    TAG_INDICATOR = '!'
+
     def __init__(self, file):
         self.file = file
-        self.source = read_file(file)
+        self.source = read_file(file) 
 
     def remove_comments(self):
-        string_pattern = re.compile(r'(["\'])(?:(?=(\\?))\2.)*?\1')
-        comment_pattern = re.compile(r'#.*')
+        in_string = False
+        result = []
 
-        def remove_comment_from_line(line):
-            matches = list(string_pattern.finditer(line))
-            
-            result = []
-            last_end = 0
-
-            for match in matches:
-                result.append(re.sub(comment_pattern, '', line[last_end:match.start()]))
-                result.append(match.group(0))
-                last_end = match.end()
-
-            result.append(re.sub(comment_pattern, '', line[last_end:]))
-
-            return ''.join(result)
-
-        processed_lines = []
         for line in self.source.split('\n'):
-            processed_line = remove_comment_from_line(line)
-            processed_lines.append(processed_line)
+            new_line = ''
+            i = 0
+            while i < len(line):
+                if line[i] == '"' and (i == 0 or line[i - 1] != '\\'):
+                    in_string = not in_string
+                
+                if not in_string and line[i] == Preprocessor.COMMENT:
+                    break
+                else:
+                    new_line += line[i]
+                i += 1 
 
-        self.source = '\n'.join(processed_lines)
+            result.append(new_line) 
+
+        self.source = '\n'.join(result)
 
     def remove_empty_lines(self):
         lines = self.source.split('\n')
@@ -41,6 +40,5 @@ class Preprocessor:
 
     def run(self):
         self.remove_comments()
-        self.remove_empty_lines()
 
 

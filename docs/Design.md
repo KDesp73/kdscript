@@ -5,8 +5,6 @@
 - echo "Hello World"
 - exit `exit-code` (int)
 
-- run "path/to/script" -- Run external kd script (maybe handled by the preprocessor)
-
 - input() -- Should change
 - val(expression) -- Should change
 - str(expression) -- Should change
@@ -17,6 +15,14 @@
 
 ```
 if condition {
+
+} else {
+
+}
+
+if condition {
+
+} else if condition {
 
 } else {
 
@@ -65,11 +71,31 @@ call name <- x, 2, 3
 a = call name <- 1.3
 ```
 
+## Casting
+
+```
+a = 5 as float
+```
+
 ## Preprocessor
 
+@ indicates preprocessor tag
+
 ```
-#import "path/to/file" -- Include methods from file
-#assign A 2
-#run "path/to/file" -- Run file as script
+@import "path/to/file" -- Include methods from file
+@alias A 2
+@run "path/to/file" -- Run file as script
+@export a
 ```
 
+## Comments
+
+```
+# Single line comment
+
+##
+Multi-
+line
+Comment
+#-
+```

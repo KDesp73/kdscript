@@ -8,6 +8,7 @@ def advance(state: State):
     """
 
     state.position += 1
+    state.line = line_from_position(state.source, state.position)
 
 def inspect(state: State):
     """
@@ -64,9 +65,35 @@ def take_next_alnum(state: State):
     """
 
     alnum = ""
-    if is_alpha(next(state)):
+    nxt = next(state)
+    if is_alpha(nxt) or nxt == '_':
         while is_alnum(inspect(state)): 
             alnum += take(state)
         
     return alnum
 
+def make_escape_character(state: State, c) -> str:
+    match c:
+        case 'n':
+            return '\n'
+        case 't':
+            return '\t'
+        case "'":
+            return '\''
+        case '"':
+            return '\"'
+        case 'r':
+            return '\r'
+        case 'b':
+            return '\b'
+        case 'f':
+            return '\f'
+        case 'a':
+            return '\a'
+        case 'v':
+            return '\v'
+        case '0':
+            return '\0'
+        case _:
+            Error(state, "unrecognized escape character").throw()
+            return ""

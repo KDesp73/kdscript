@@ -1,5 +1,13 @@
 # This should be removed
-
+#
+#
 echo "hello # world\n" # this should be removed
+#echo "hello # world\n" # this should be removed
+# echo "hello # world\n" # this should be removed
+#       echo "hello # world\n" # this should be removed
+
+if 1 { # Comment
+    echo "Hello # world\n"
+}
 
 # This should be removed
