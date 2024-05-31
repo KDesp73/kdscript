@@ -10,7 +10,6 @@ TODO: better readme
 TODO: C port
 TODO: differenciate return, break, esc
 TODO: change input, val, str methods
-TODO: return / esc dont make the rest of the block inactive
 DONE: preproccessor
 DONE: # in string breaks acts as the start of a comment
 DONE: mod
@@ -20,3 +19,4 @@ DONE: handle Ctrl+C
 DONE: else if
 DONE: type keywords for casting
 DONE: return values from methods
+DONE: return / esc dont make the rest of the block inactive

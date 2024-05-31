@@ -108,6 +108,8 @@ def run_return(state: State, active: list):
     if active[0]:
         if e != None:
             state.scope.set_return_value(e)
+        else:
+            Error(state, "expected expression").throw()
         active[0] = False
 
 def run_if_else(state: State, active: list):
