@@ -104,8 +104,9 @@ def run_return(state: State, active: list):
     from expressions import Expression
 
     e = Expression(state, active)
-    if active[0] and e != None:
-        state.scope.set_return_value(e[1])
+    if active[0]:
+        if e != None:
+            state.scope.set_return_value(e)
         active[0] = False
 
 def run_if_else(state: State, active: list):

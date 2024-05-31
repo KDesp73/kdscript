@@ -2,6 +2,6 @@ func add_one {
     return _1 + 1
 }
 
-a = call test <- 3
+a = call add_one <- call add_one <- 1
 
 echo "a: ", a, "\n"

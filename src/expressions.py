@@ -183,9 +183,9 @@ def Expression(state: State, active: list):
 def Block(state: State, active: list):
     if parser.take_next(state, '{'):
         while not parser.take_next(state, '}'):
-            Block(state, active)
+            Block(state, active.copy())
     else: 
-        Statement(state, active)
+        Statement(state, active.copy())
 
 def Program(state: State):
     active = [True]
