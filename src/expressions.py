@@ -105,7 +105,10 @@ def MathTerm(state: State, active: list):
                     RuntimeError(state, "Division by zero").throw()
                 m = m / m2
         elif c == '%':
-            m = m % m2
+            if active[0]: 
+                if m2 == 0:
+                    RuntimeError(state, "Division by zero").throw()
+                m = m % m2
 
     return m
 
@@ -183,9 +186,9 @@ def Expression(state: State, active: list):
 def Block(state: State, active: list):
     if parser.take_next(state, '{'):
         while not parser.take_next(state, '}'):
-            Block(state, active.copy())
+            Block(state, active)
     else: 
-        Statement(state, active.copy())
+        Statement(state, active)
 
 def Program(state: State):
     active = [True]

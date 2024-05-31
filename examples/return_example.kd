@@ -1,7 +1,26 @@
 func add_one {
     return _1 + 1
+    echo "Hello\n"
 }
 
-a = call add_one <- call add_one <- 1
+func test {
+    esc
+    echo "Please dont print"
+}
+
+func eu_mod {
+    return ((_1 % _2) + _2) % _2
+}
+
+a = 0
+
+while a < 10 {
+    a = call add_one <- a
+}
 
 echo "a: ", a, "\n"
+
+call test
+
+mod = call eu_mod <- 12, a
+echo "mod: ", mod, "\n"

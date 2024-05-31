@@ -98,6 +98,7 @@ def run_call(state: State, active: list):
             state.scope.exit_scope()
 
     state.position = ret
+    active[0] = True
     return ret_value 
 
 def run_return(state: State, active: list):
