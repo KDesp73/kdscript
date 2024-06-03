@@ -90,14 +90,14 @@ def run_call(state: State, active: list):
         for i, arg in enumerate(args):
             state.scope.set_variable(f"_{i + 1}", arg)
 
-        ret_value = None
         try:
             Block(state, active)
             ret_value = state.scope.get_return_value()
         finally:
             state.scope.exit_scope()
 
-    state.position = ret
+    if ret_value != None:
+        state.position = ret
     active[0] = True
     return ret_value 
 

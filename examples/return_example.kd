@@ -14,6 +14,12 @@ func eu_mod {
 
 a = 0
 
+a = call add_one <- call add_one <- call add_one <- 1
+
+echo "a:", a, "\n"
+
+esc
+
 while a < 10 {
     a = call add_one <- a
 }

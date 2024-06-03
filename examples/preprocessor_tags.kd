@@ -1,0 +1,6 @@
+@import examples/pyramid
+
+echo "Hello World\n"
+
+call print_pyramid <- 10
+

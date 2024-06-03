@@ -190,8 +190,7 @@ def Block(state: State, active: list):
     else: 
         Statement(state, active)
 
-def Program(state: State):
-    active = [True]
+def Program(state: State, active: list[bool] = [True]):
     while parser.next(state) != '\0':
         Block(state, active)
 

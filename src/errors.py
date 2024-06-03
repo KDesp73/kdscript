@@ -6,7 +6,7 @@ def print_error(state: State, message, tag: str):
         s = state.source[:state.position].rfind("\n") + 1
         e = state.source.find("\n", state.position)
         line = line_from_position(state.source, state.position)
-        print(f"\n{tag}: {message} -> Line: {str(line)}: '{state.source[s:state.position]}_{state.source[state.position:e]}'\n")
+        print(f"\n[./{state.file}.kd] {tag}: {message} -> Line {str(line)}: '{state.source[s:state.position]}_{state.source[state.position:e]}'\n")
 
 class Error:
     def __init__(self, state: State, message):
@@ -22,6 +22,11 @@ class RuntimeError(Error):
     def __init__(self, state: State, message):
          super().__init__(state, message)
          self.TAG = "RuntimeError"
+
+class PreprocessorError(Error):
+    def __init__(self, state: State, message):
+         super().__init__(state, message)
+         self.TAG = "PreprocessorError"
 
 def TODO():
     ERRO("Not implemented yet")

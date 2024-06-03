@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 from logger import ERRO, INFO
 import utils
 from preprocessor import Preprocessor
@@ -5,7 +7,9 @@ from state import State
 from expressions import Program
 import argparse
 
-from utils import enable_ansi_escape_codes, print_enumarated
+def add_hashmaps(hash1: dict, hash2: dict):
+    for key in hash2.keys():
+        hash1[key] = hash2[key]
 
 def main():
     args_parser = argparse.ArgumentParser(
@@ -31,9 +35,14 @@ def main():
     preprocessor = Preprocessor(file)
     preprocessor.run()
 
+    state = State(file, preprocessor.state.source)
+    for scope in preprocessor.scopes:
+        if state.scope.scopes.head != None and scope.head != None:
+            add_hashmaps(state.scope.scopes.head.data, scope.head.data)
+
     utils.enable_ansi_escape_codes()
     try:
-        Program(State(file, preprocessor.source))
+        Program(state)
     except KeyboardInterrupt:
         print()
         INFO("Terminated by user")

@@ -22,9 +22,4 @@ func print_pyramid {
 echo "Enter height: "
 height = val(input())
 
-i = 2
-while i <= height{
-    echo "[", i, "]\n"
-    call print_pyramid <- i
-    i = i + 1
-}
+call print_pyramid <- height
