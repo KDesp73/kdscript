@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 from logger import ERRO, INFO
 import utils
 from preprocessor import Preprocessor
